@@ -156,15 +156,13 @@ Enjoy! 👍
 <details>
 <summary>Global</summary>
 
-| name           | version |
-| -------------- | ------- |
-| ascii-tree     | ^0.3.0  |
-| colors         | ^1.4.0  |
-| ejs            | ^3.0.1  |
-| lodash.merge   | ^4.6.2  |
-| markdown-table | ^1.1.3  |
-| yargonaut      | ^1.1.4  |
-| yargs          | ^15.0.2 |
+| name         | version |
+| ------------ | ------- |
+| colors       | ^1.4.0  |
+| ejs          | ^3.0.1  |
+| lodash.merge | ^4.6.2  |
+| yargonaut    | ^1.1.4  |
+| yargs        | ^15.0.2 |
 
 </details>
 
@@ -173,6 +171,7 @@ Enjoy! 👍
 
 | name                   | version |
 | ---------------------- | ------- |
+| ascii-tree             | ^0.3.0  |
 | cross-env              | ^6.0.3  |
 | eslint                 | ^6.7.2  |
 | eslint-config-standard | ^14.1.0 |
@@ -180,6 +179,7 @@ Enjoy! 👍
 | eslint-plugin-node     | ^10.0.0 |
 | eslint-plugin-promise  | ^4.2.1  |
 | eslint-plugin-standard | ^4.0.1  |
+| markdown-table         | ^1.1.3  |
 
 </details>
 
