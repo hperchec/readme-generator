@@ -12,12 +12,14 @@ Clone this [repository](<%%= repositoryUrl %>) and install via `npm install`
 
 <details>
 <summary>Global</summary>
+
 <%%= dependencies %>
 
 </details>
 
 <details>
 <summary>Dev</summary>
+
 <%%= devDependencies %>
 
 </details>

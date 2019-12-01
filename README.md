@@ -23,7 +23,7 @@ readme-generator init
 npx readme-generator init
 ```
 
-This will create a readme folder at the root of your project
+This will create a `readme` folder at the root of your project
 
 ```
 <your_project_root>
@@ -129,12 +129,14 @@ Clone this [repository](<%= repositoryUrl %>) and install via `npm install`
 
 <details>
 <summary>Global</summary>
+
 <%= dependencies %>
 
 </details>
 
 <details>
 <summary>Dev</summary>
+
 <%= devDependencies %>
 
 </details>
@@ -153,6 +155,7 @@ Enjoy! 👍
 
 <details>
 <summary>Global</summary>
+
 | name           | version |
 | -------------- | ------- |
 | ascii-tree     | ^0.3.0  |
@@ -162,10 +165,12 @@ Enjoy! 👍
 | markdown-table | ^1.1.3  |
 | yargonaut      | ^1.1.4  |
 | yargs          | ^15.0.2 |
+
 </details>
 
 <details>
 <summary>Dev</summary>
+
 | name                   | version |
 | ---------------------- | ------- |
 | cross-env              | ^6.0.3  |
@@ -175,6 +180,7 @@ Enjoy! 👍
 | eslint-plugin-node     | ^10.0.0 |
 | eslint-plugin-promise  | ^4.2.1  |
 | eslint-plugin-standard | ^4.0.1  |
+
 </details>
 
 ## License
