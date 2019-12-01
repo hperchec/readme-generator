@@ -10,6 +10,9 @@
 
 - [Get started](#get-started)
 - [Configure](#configure)
+  - [Configuration](#configuration)
+  - [Data (ejs)](#data-ejs)
+  - [Template](#template)
 - [Dependencies](#dependencies)
 - [License](#license)
 
@@ -57,6 +60,8 @@ Add a script to your `package.json` file:
 
 ## Configure
 
+### Configuration
+
 Find configuration in `readme/config.js` file:
 
 ```javascript
@@ -75,6 +80,8 @@ Find configuration in `readme/config.js` file:
   }
 }
 ```
+
+### Data (ejs)
 
 Export your (ejs) data in `readme/readme.js` file:
 
@@ -120,7 +127,11 @@ module.exports = {
 
 ```
 
+### Template
+
 And use it in your `readme/template.md` file:
+
+> ***NOTE***: Note that the extension is .md to ease code reading with a text editor like Visual Studio Code
 
 ```markdown
 # Awesome project!
