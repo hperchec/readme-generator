@@ -13,6 +13,7 @@
   - [Configuration](#configuration)
   - [Data (ejs)](#data-ejs)
   - [Template](#template)
+- [Development](#development)
 - [Dependencies](#dependencies)
 - [License](#license)
 
@@ -147,13 +148,16 @@ Clone this [repository](<%%= repositoryUrl %>) and install via `npm install`
 ## Dependencies
 
 <details>
+
 <summary>Global</summary>
 
 <%%= dependencies %>
 
 </details>
 
+
 <details>
+
 <summary>Dev</summary>
 
 <%%= devDependencies %>
@@ -170,16 +174,43 @@ npm run readme
 
 Enjoy! 👍
 
+## Development
+
+> ***NOTE***: This project uses eslint
+
+Clone the repository
+
+```bash
+git clone <%= repositoryUrl %>
+```
+
+Run
+
+```bash
+npm run start
+# or npm run dev
+# see package.json for all scripts
+```
+
+`init` command
+
+```bash
+npm run readme-init
+```
+
 ## Dependencies
 
 <details>
+
 <summary>Global</summary>
 
 <%= dependencies %>
 
 </details>
 
+
 <details>
+
 <summary>Dev</summary>
 
 <%= devDependencies %>
