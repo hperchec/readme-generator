@@ -199,10 +199,10 @@ npm run readme-init
 | name         | version |
 | ------------ | ------- |
 | colors       | ^1.4.0  |
-| ejs          | ^3.0.1  |
+| ejs          | ^3.1.3  |
 | lodash.merge | ^4.6.2  |
 | yargonaut    | ^1.1.4  |
-| yargs        | ^15.0.2 |
+| yargs        | ^15.3.1 |
 
 </details>
 
@@ -215,9 +215,9 @@ npm run readme-init
 | ---------------------- | ------- |
 | ascii-tree             | ^0.3.0  |
 | cross-env              | ^6.0.3  |
-| eslint                 | ^6.7.2  |
-| eslint-config-standard | ^14.1.0 |
-| eslint-plugin-import   | ^2.18.2 |
+| eslint                 | ^6.8.0  |
+| eslint-config-standard | ^14.1.1 |
+| eslint-plugin-import   | ^2.22.0 |
 | eslint-plugin-node     | ^10.0.0 |
 | eslint-plugin-promise  | ^4.2.1  |
 | eslint-plugin-standard | ^4.0.1  |
