@@ -14,17 +14,14 @@ var asciitree = require('ascii-tree')
 // Import package.json data
 const packageJson = require('../package.json')
 // Based on the package.json file, get some data and informations
-// Get package name
 const packageName = packageJson.name
-// Get dependencies
-const dependencies = packageJson.dependencies
-// Get dev dependencies
-const devDependencies = packageJson.devDependencies
-// Get authors (author + contributors)
-const authors = [packageJson.author, ...packageJson.contributors]
-// Homepage
+const dependencies = packageJson.dependencies || {}
+const devDependencies = packageJson.devDependencies || {}
+const peerDependencies = packageJson.peerDependencies || {}
+const author = packageJson.author
+const contributors = packageJson.contributors || []
+const license = packageJson.license || 'Unknown'
 const homepage = packageJson.homepage
-// Repository
 const repository = packageJson.repository
 
 // Repo URL
@@ -43,13 +40,22 @@ function getMdDependencies (deps) {
 }
 
 /**
+ * Return author link
+ * @param {Object} author
+ * @return {string}
+ */
+function getMdAuthor (author) {
+  return '[' + author.name + '](' + author.url + ')'
+}
+
+/**
  * Return markdown list of persons
- * @param {Array} authors
+ * @param {Array} contributors
  * @return {String}
  */
-function getMdAuthors (authors) {
+function getMdContributors (contributors) {
   var mdString = ''
-  authors.forEach((person) => {
+  contributors.forEach((person) => {
     mdString += '- [' + person.name + '](' + person.url + ')\n'
   })
   return mdString
@@ -64,7 +70,10 @@ module.exports = {
   repositoryUrl: repositoryUrl,
   dependencies: getMdDependencies(dependencies),
   devDependencies: getMdDependencies(devDependencies),
-  authors: getMdAuthors(authors),
+  peerDependencies: getMdDependencies(peerDependencies),
+  author: getMdAuthor(author),
+  contributors: getMdContributors(contributors),
+  license: license,
   generateAsciiTree: function (str) {
     return asciitree.generate(str) // See documentation https://www.npmjs.com/package/ascii-tree
   }

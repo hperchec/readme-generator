@@ -21,7 +21,11 @@
     "templater",
     "generator"
   ],
-  "author": "Hervé Perchec <herve.perchec@gmail.com>",
+  "author": {
+    "name" : "Hervé Perchec",
+    "email" : "contact@herve-perchec.com",
+    "url" : "http://herve-perchec.com/"
+  },
   "contributors": [],
   "license": "ISC",
   "bugs": {

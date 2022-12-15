@@ -5,7 +5,7 @@
 'use strict'
 
 // Dependencies
-const markdownTable = require('markdown-table')
+const markdownTable = require('markdown-table') // ! v3 not compatible, use v2
 
 // Based on the package.json file, get some data and informations
 const packageJson = require('../package.json')
