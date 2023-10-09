@@ -1,5 +1,5 @@
 /**
- * @hperchec/readme-generator [/src/readme.js]
+ * @hperchec/readme-generator [/src/data.js]
  * @file Data for default readme template render
  * This data will be injected in ./template.md
  * @author Hervé Perchec <herve.perchec@gmail.com>
