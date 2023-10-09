@@ -1,0 +1,6 @@
+# Ignore all
+*
+
+# Except these files
+!.gitignore
+!package.json

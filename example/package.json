@@ -1,0 +1,27 @@
+{
+    "name": "readme-generator-example",
+    "version": "1.0.0",
+    "description": "Example",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/herveperchec/readme-generator.git"
+    },
+    "author": {
+      "name" : "Hervé Perchec",
+      "email" : "contact@herve-perchec.com",
+      "url" : "http://herve-perchec.com/"
+    },
+    "contributors": [],
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/herveperchec/readme-generator/issues"
+    },
+    "homepage": "https://github.com/herveperchec/readme-generator#readme",
+    "devDependencies": {
+        "@hperchec/readme-generator": "file:.."
+    }
+  }
+  
