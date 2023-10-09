@@ -16,7 +16,7 @@ module.exports = {
   // Output file name
   outputName: 'README.md', // 'README.md' by default
   // Path to ejs data file
-  ejsDataPath: path.resolve(__dirname, './readme.js'), // Default template ejs data file
+  ejsDataPath: path.resolve(__dirname, './data.js'), // Default template ejs data file
   // EJS options (see https://www.npmjs.com/package/ejs#options)
   ejsOptions: {
     /* your ejs options... */
