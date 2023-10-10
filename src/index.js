@@ -1,28 +1,43 @@
 /**
- * @exports readme-generator
- * @description @hperchec/readme-generator [/src/index.js]
  * @file Entry point to generate readme file
+ * @description @hperchec/readme-generator [/src/index.js]
  * @author Hervé Perchec <herve.perchec@gmail.com>
+ */
+
+/**
+ * @module readme-generator
+ * @type {object}
+ * @typicalname readmeGenerator
+ * @description
+ * From: @hperchec/readme-generator@{{{{VERSION}}}}
+ * @example
+ * const readmeGenerator = require('@hperchec/readme-generator')
  */
 
 'use strict'
 
 /**
- * @typedef Configuration
- * @type {object}
+ * Configuration object definition
+ * @typedef {object} Configuration
  * @property {string} [fileName] - Output file name: 'README.md' by default. Only for "generate" method
  * @property {string} [destFolder] - Output path, default is process.cwd (project root). Only for "generate" method
  * @property {string} [templatePath] - Template path: default is .docs/readme/template.md
  * @property {string} [ejsDataPath] -  Path to EJS data file: default is .docs/readme/data.js
- * @property {object} [ejsOptions] - EJS options: see also https://www.npmjs.com/package/ejs#options
+ * @property {object} [ejsOptions] - EJS options: see also https://www.npmjs.com/package/ejs#options. Default "root" option contains your template folder path.
+ * @property {boolean} [appendDontEditMessage] - If true, append "don't edit" message to rendered markdown. Default is true.
+ * @property {boolean} [autoToc] - If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is true.
  */
 
 // Dependencies
-const merge = require('lodash.merge')
 const path = require('path')
-const ejs = require('ejs')
 const fs = require('fs')
 const colors = require('colors') // eslint-disable-line no-unused-vars
+const merge = require('lodash.merge')
+const ejs = require('ejs')
+const mdu = require('markdown-utils')
+const markdownTable = require('markdown-table')
+const markdownToc = require('markdown-toc')
+const asciitree = require('ascii-tree')
 
 // Constants
 const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
@@ -32,36 +47,21 @@ const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
  */
 
 /**
- * @ignore
- * @type {string}
- */
-exports.defaultInitTargetRelativePath = DEFAULT_INIT_TARGET_RELATIVE_PATH
-
-exports.generate = generate
-exports.render = render
-exports.processConfig = processConfig
-
-/**
- * @alias module:readme-generator.defaultConfig
- * @type {Configuration}
- */
-const defaultConfig = exports.defaultConfig = {
-  fileName: 'README.md',
-  destFolder: process.cwd(),
-  templatePath: path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH, 'template.md'),
-  ejsDataPath: path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH, 'data.js'),
-  ejsOptions: {}
-}
-
-/**
+ * @alias module:readme-generator.generate
  * @async
  * @param {Configuration} config - The configuration object
  * @returns {Promise<void>}
  * @throws Throws error if render or file writing fails
  * @description
  * Writes rendered README markdown to file
+ * @example
+ * const result = await readmeGenerator.generate({
+ *   // Your options
+ *   // ...
+ * })
+ * // => output to README.md file
  */
-async function generate (config) {
+const generate = exports.generate = async function (config) { // eslint-disable-line no-unused-vars
   // First, parse custom config
   const processedConfig = processConfig(config)
   // Target file path
@@ -99,13 +99,19 @@ async function generate (config) {
 }
 
 /**
+ * @alias module:readme-generator.render
  * @async
  * @param {Configuration} config - Same as generate config but `fileName` and `destFolder` option are just ignored
  * @returns {Promise<string|Error>} Returns the rendered markdown as string or Error thrown when calling `ejs.renderFile` method
  * @description
  * Render README markdown
+ * @example
+ * const result = await readmeGenerator.render({
+ *   // Your options
+ *   // ...
+ * })
  */
-async function render (config) {
+const render = exports.render = async function (config) {
   // First, parse custom config
   const processedConfig = processConfig(config)
 
@@ -113,39 +119,164 @@ async function render (config) {
   const data = require(processedConfig.ejsDataPath)
   // Use ejs to template README file
   // Merge with user data
-  const ejsData = merge({
-    // Default data...
-  }, data)
+  const ejsData = merge(defaultEjsData, data)
 
   // Await for ejs renderFile response
-  const content = await ejs.renderFile(processedConfig.templatePath, ejsData, processedConfig.ejsOptions)
+  let content = await ejs.renderFile(processedConfig.templatePath, ejsData, processedConfig.ejsOptions)
   // If error
   if (content instanceof Error) {
     // Return error
     return content
-  // Else, everything is okay
+  // Else, EJS response is valid
   } else {
-    // EJS response is valid
-    // console.log('content : ', content)
+    // Append "don't edit this file" to content
+    if (processedConfig.appendDontEditMessage) {
+      const dontEditMessage = '\n----\n\n*This file was generated by [@hperchec/readme-generator](https://www.npmjs.com/package/@hperchec/readme-generator). Don\'t edit it.*\n'
+      content += dontEditMessage
+    }
+    // Then, parse for auto toc
+    if (processedConfig.autoToc) {
+      // markdown-toc 'firsth1' option is broken when using "<!-- toc -->" special comment in template
+      // See https://github.com/jonschlinkert/markdown-toc/pull/192
+      // So, as we can't use insert method for the moment, we generate our own toc
+      // with the help of markdown-toc utils
+      const tocTokens = markdownToc(content)
+        .json
+        .filter((tok) => tok.lvl > 1) // keep only min h2
+        .map((tok) => markdownToc.linkify(tok)) // linkify content
 
-    // content += '\n' + epilogue
+      const bullets = markdownToc.bullets(tocTokens, {
+        firsth1: false,
+        highest: 1, // force to 1 to ignore h1
+        maxdepth: 6, // set manually maxdepth,
+        chars: '-'
+      })
+
+      // Find "<!-- toc -->" special comment in template
+      content = content.replace(/(?:<!-- toc -->)/g, bullets)
+    }
 
     return content
   }
 }
 
 /**
+ * @alias module:readme-generator.processConfig
  * @param {Configuration} config - The config object to process
  * @returns {Configuration} Returns the processed configuration
  * @description
  * Takes a custom config as unique parameter and merges it with the default configuration object.
+ * @example
+ * const processedConfig = await readmeGenerator.processConfig({
+ *   // Your config
+ *   // ...
+ * })
+ * // => returns the processed config object
  */
-function processConfig (config) {
+const processConfig = exports.processConfig = function (config) {
   const result = {}
   result.fileName = config.fileName || defaultConfig.fileName
   result.destFolder = config.destFolder || defaultConfig.destFolder
   result.templatePath = config.templatePath || defaultConfig.templatePath
   result.ejsDataPath = config.ejsDataPath || defaultConfig.ejsDataPath
-  result.ejsOptions = config.ejsOptions || defaultConfig.ejsOptions
+  // If custom ejs options
+  if (config.ejsOptions) {
+    result.ejsOptions = {
+      root: defaultConfig.ejsOptions.root, // root prop see below (always array)
+      views: defaultConfig.ejsOptions.views, // views prop see below (always array)
+      ...config.ejsOptions
+    }
+    // Ensure that ejs root option includes templatePath folder
+    const rootTemplatePath = path.dirname(result.templatePath)
+    if (!result.ejsOptions.root.includes(rootTemplatePath)) {
+      result.ejsOptions.root.unshift(rootTemplatePath)
+    }
+    // Ensure that ejs views option includes viewsInternalIncludesPath & viewsTemplatePath
+    const viewsInternalIncludesPath = path.resolve(__dirname, 'partials')
+    if (!result.ejsOptions.views.includes(viewsInternalIncludesPath)) {
+      result.ejsOptions.views.unshift(viewsInternalIncludesPath)
+    }
+    const viewsTemplatePath = path.dirname(result.templatePath)
+    if (!result.ejsOptions.views.includes(viewsTemplatePath)) {
+      result.ejsOptions.views.unshift(viewsTemplatePath)
+    }
+  } else {
+    result.ejsOptions = defaultConfig.ejsOptions
+  }
+  result.appendDontEditMessage = config.appendDontEditMessage !== undefined
+    ? config.appendDontEditMessage
+    : defaultConfig.appendDontEditMessage
+  result.autoToc = config.autoToc !== undefined
+    ? config.autoToc
+    : defaultConfig.autoToc
   return result
+}
+
+/**
+ * @ignore
+ * @type {string}
+ */
+exports.defaultInitTargetRelativePath = DEFAULT_INIT_TARGET_RELATIVE_PATH
+
+/**
+ * @alias module:readme-generator.defaultConfig
+ * @type {Configuration}
+ * @description
+ * Returns the default configuration object.
+ * This base configuration is used by `processConfig` method and so `generate` and `render` methods.
+ * See also {@link module:readme-generator~Configuration Configuration} defaults.
+ */
+const defaultConfig = exports.defaultConfig = {
+  fileName: 'README.md',
+  destFolder: process.cwd(),
+  templatePath: path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH, 'template.md'),
+  ejsDataPath: path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH, 'data.js'),
+  ejsOptions: {
+    /**
+     * Set project root for includes with an absolute path (e.g, /file.ejs).
+     * Can be array to try to resolve include from multiple directories.
+     */
+    root: [
+      // User template path
+      path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH)
+    ],
+    /**
+     *  An array of paths to use when resolving includes with relative paths.
+     */
+    views: [
+      // Includes from readme-generator partials
+      path.resolve(__dirname, 'partials'),
+      // User template path
+      path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH)
+    ]
+  },
+  appendDontEditMessage: true,
+  autoToc: true
+}
+
+/**
+ * @alias module:readme-generator.defaultEjsData
+ * @type {object}
+ * @description
+ * Returns the default EJS data object.
+ * This base EJS data object is used by `render` methods and merged with user provided EJS data.
+ */
+const defaultEjsData = exports.defaultEjsData = {
+  /**
+   * @alias module:readme-generator.defaultEjsData.$utils
+   * @type {object}
+   * @description
+   * Contains all methods from `markdown-utils` package plus the following:
+   *
+   * - `table`: from `markdown-table` package
+   * - `asciiTree`: from `ascii-tree` package, see documentation: https://www.npmjs.com/package/ascii-tree
+   */
+  $utils: {
+    // markdown-utils
+    ...mdu,
+    // markdown-table
+    table: markdownTable,
+    // ascii-tree
+    asciiTree: asciitree.generate
+  }
 }

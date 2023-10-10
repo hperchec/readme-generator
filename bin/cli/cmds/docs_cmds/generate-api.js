@@ -55,7 +55,7 @@ module.exports = {
       if (!fs.existsSync(configPath)) {
         // Log error and exit
         console.error(`Can't find custom config file: "${configPath}"`)
-        abort(1)
+        process.exit(1)
       }
       options = require(configPath)
     } else {
