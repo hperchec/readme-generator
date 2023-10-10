@@ -1,7 +1,6 @@
 /**
- * @module readme-generator
- * @description
- * @hperchec/readme-generator [/src/index.js]
+ * @exports readme-generator
+ * @description @hperchec/readme-generator [/src/index.js]
  * @file Entry point to generate readme file
  * @author Hervé Perchec <herve.perchec@gmail.com>
  */
@@ -11,11 +10,11 @@
 /**
  * @typedef Configuration
  * @type {object}
- * @property {string} fileName - Output file name: 'README.md' by default. Only for "generate" method)
- * @property {string} destFolder - Output path, default is process.cwd (project root). Only for "generate" method
- * @property {string} templatePath - Template path: default is .docs/readme/template.md
- * @property {string} ejsDataPath -  Path to EJS data file: default is .docs/readme/data.js
- * @property {object} ejsOptions - EJS options: see also https://www.npmjs.com/package/ejs#options
+ * @property {string} [fileName] - Output file name: 'README.md' by default. Only for "generate" method
+ * @property {string} [destFolder] - Output path, default is process.cwd (project root). Only for "generate" method
+ * @property {string} [templatePath] - Template path: default is .docs/readme/template.md
+ * @property {string} [ejsDataPath] -  Path to EJS data file: default is .docs/readme/data.js
+ * @property {object} [ejsOptions] - EJS options: see also https://www.npmjs.com/package/ejs#options
  */
 
 // Dependencies
@@ -31,6 +30,12 @@ const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
 /**
  * Exports
  */
+
+/**
+ * @ignore
+ * @type {string}
+ */
+exports.defaultInitTargetRelativePath = DEFAULT_INIT_TARGET_RELATIVE_PATH
 
 exports.generate = generate
 exports.render = render
@@ -49,14 +54,10 @@ const defaultConfig = exports.defaultConfig = {
 }
 
 /**
- * @type {string}
- */
-exports.defaultInitTargetRelativePath = DEFAULT_INIT_TARGET_RELATIVE_PATH
-
-/**
  * @async
  * @param {Configuration} config - The configuration object
- * @returns {void}
+ * @returns {Promise<void>}
+ * @throws Throws error if render or file writing fails
  * @description
  * Writes rendered README markdown to file
  */
@@ -100,7 +101,7 @@ async function generate (config) {
 /**
  * @async
  * @param {Configuration} config - Same as generate config but `fileName` and `destFolder` option are just ignored
- * @returns {Promise<string|Error>} - Returns the rendered markdown as string or Error thrown when calling `ejs.renderFile` method
+ * @returns {Promise<string|Error>} Returns the rendered markdown as string or Error thrown when calling `ejs.renderFile` method
  * @description
  * Render README markdown
  */
@@ -135,7 +136,7 @@ async function render (config) {
 
 /**
  * @param {Configuration} config - The config object to process
- * @returns {Configuration} - Returns the processed configuration
+ * @returns {Configuration} Returns the processed configuration
  * @description
  * Takes a custom config as unique parameter and merges it with the default configuration object.
  */

@@ -1,4 +1,4 @@
-const { packageJson } = require('../../src').utils
+const packageJson = require('../../package.json')
 
 /**
  * See https://jsdoc.app/about-configuring-jsdoc.html
