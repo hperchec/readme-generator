@@ -221,6 +221,7 @@ The following have been renamed:
 | markdown-table | ^1.1.3  |
 | markdown-toc   | ^1.2.0  |
 | markdown-utils | ^1.0.0  |
+| prompts        | ^2.4.2  |
 | yargonaut      | ^1.1.4  |
 | yargs          | ^17.7.2 |
 
