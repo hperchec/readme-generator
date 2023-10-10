@@ -67,13 +67,12 @@ const command = {
         [ 'branch', '--show-current' ],
         { stdio: 'pipe', cwd: rootDir }
       )
-      console.log('current branch name : ', checkBranchResult.stdout)
-      process.exit()
-      if (checkBranchResult.stdout) {
-        console.error('Please commit your changes before creating a new release!', new Error('There are changes to commit'))
+      const currentBranch = checkBranchResult.stdout
+      if (currentBranch !== 'main') {
+        console.error('Releases are only allowed in "main" branch.', new Error('Not valid branch: ' + currentBranch))
         process.exit(1)
       }
-      console.log(chalk.green('✔ Local repository is clean'))
+      console.log(chalk.green('✔ Valid branch'))
       console.log() // Blank line
     }
 
