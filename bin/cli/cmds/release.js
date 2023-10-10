@@ -142,8 +142,9 @@ const command = {
     console.log('Bump version')
     await execa('npm',
       [
+        ...(argv.dry ? [ '--no-git-tag-version' ] : []),
         'version',
-        (argv.dry ? '--no-git-tag-version' : [])
+        targetVersion
       ],
       { stdio: 'pipe', cwd: rootDir }
     )
@@ -152,36 +153,42 @@ const command = {
     /**
      * Publish package (skip in dry mode)
      */
-    if (!argv.dry) {
-      console.log(`Publishing ${packageName}`)
-      const releaseTag = targetVersion.includes('alpha')
-        ? 'alpha'
-        : targetVersion.includes('beta')
-          ? 'beta'
-          : targetVersion.includes('rc')
-            ? 'rc'
-            : null
-      let alreadyPublished = false
-      try {
-        await execa('npm', [ 'publish', ...(releaseTag ? [ '--tag', releaseTag ] : []) ], { stdio: 'pipe', cwd: rootDir })
-      } catch (e) {
-        if (e.stderr.match(/previously published/)) {
-          alreadyPublished = true
-        } else {
-          error('Unknown error during publishing', e)
-        }
-      }
+    console.log(`Publishing ${packageName}`)
+    const releaseTag = targetVersion.includes('alpha')
+      ? 'alpha'
+      : targetVersion.includes('beta')
+        ? 'beta'
+        : targetVersion.includes('rc')
+          ? 'rc'
+          : null
 
-      console.log(
-        alreadyPublished
-          ? chalk.yellow(`Skipping already published: ${packageName}`)
-          : chalk.green('✔ Success')
-      )
-      console.log() // Blank line
+    let alreadyPublished = false
+
+    const publishResult = await execa('npm',
+      [
+        'publish',
+        ...(argv.dry ? [ '--dry-run' ] : []),
+        ...(releaseTag ? [ '--tag', releaseTag ] : [])
+      ],
+      { stdio: 'pipe', cwd: rootDir }
+    )
+
+    // If error
+    if (publishResult.stderr && publishResult.stderr.match(/previously published/)) {
+      alreadyPublished = true
+    } else {
+      console.error('Unknown error during publishing', publishResult.stderr)
     }
 
-    log(chalk.green(`✔ Release v${targetVersion} successfuly created`))
-    log()
+    console.log(
+      alreadyPublished
+        ? chalk.yellow(`Skipping already published: ${packageName}`)
+        : chalk.green('✔ Success')
+    )
+    console.log() // Blank line
+
+    console.log(chalk.green(`✔ Release v${targetVersion} successfuly created`))
+    console.log()
   }
 }
 
