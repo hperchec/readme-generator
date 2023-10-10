@@ -13,7 +13,8 @@
     "example:reset": "git checkout --no-overlay -- example && cd example && git clean -fdX",
     "example:test": "npm run example:reset && cd example && npm install && npx readme-generator init",
     "release": "npx cross-env CLI_ENV=development node ./bin/cli release",
-    "changelog": "npx cross-env CLI_ENV=development node ./bin/cli changelog"
+    "changelog": "npx cross-env CLI_ENV=development node ./bin/cli changelog",
+    "version": "npm run changelog && git add CHANGELOG.md"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "markdown-table": "^1.1.3",
     "markdown-toc": "^1.2.0",
     "markdown-utils": "^1.0.0",
+    "prompts": "^2.4.2",
     "yargonaut": "^1.1.4",
     "yargs": "^17.7.2"
   },
