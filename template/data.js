@@ -25,7 +25,7 @@ const repositoryUrl = packageJson.repository.url
 // |    |       |
 function mdDependencies (deps) {
   return markdownTable([
-    ['name', 'version'],
+    [ 'name', 'version' ],
     ...(Object.entries(deps))
   ])
 }
@@ -35,7 +35,7 @@ function mdDependencies (deps) {
  */
 module.exports = {
   projectUrl: homepage,
-  repositoryUrl: repositoryUrl,
+  repositoryUrl,
   dependencies: mdDependencies(dependencies),
   devDependencies: mdDependencies(devDependencies)
   /* ... */
