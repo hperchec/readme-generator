@@ -1,29 +1,29 @@
 # API documentation
 
-## Functions
+<a name="module_readme-generator"></a>
 
-<dl>
-<dt><a href="#generate">generate(config)</a> ⇒ <code>Promise.&lt;void&gt;</code></dt>
-<dd><p>Writes rendered README markdown to file</p>
-</dd>
-<dt><a href="#render">render(config)</a> ⇒ <code>Promise.&lt;(string|Error)&gt;</code></dt>
-<dd><p>Render README markdown</p>
-</dd>
-<dt><a href="#processConfig">processConfig(config)</a> ⇒ <code><a href="#Configuration">Configuration</a></code></dt>
-<dd><p>Takes a custom config as unique parameter and merges it with the default configuration object.</p>
-</dd>
-</dl>
+## readme-generator : <code>object</code>
+From: @hperchec/readme-generator@1.0.4
 
-## Typedefs
+**Example**  
+```js
+const readmeGenerator = require('@hperchec/readme-generator')
+```
 
-<dl>
-<dt><a href="#Configuration">Configuration</a> : <code>object</code></dt>
-<dd></dd>
-</dl>
+* [readme-generator](#module_readme-generator) : <code>object</code>
+    * _static_
+        * [.generate](#module_readme-generator.generate) ⇒ <code>Promise.&lt;void&gt;</code>
+        * [.render](#module_readme-generator.render) ⇒ <code>Promise.&lt;(string\|Error)&gt;</code>
+        * [.processConfig](#module_readme-generator.processConfig) ⇒ <code>Configuration</code>
+        * [.defaultConfig](#module_readme-generator.defaultConfig) : <code>Configuration</code>
+        * [.defaultEjsData](#module_readme-generator.defaultEjsData) : <code>object</code>
+            * [.$utils](#module_readme-generator.defaultEjsData.$utils) : <code>object</code>
+    * _inner_
+        * [~Configuration](#module_readme-generator..Configuration) : <code>object</code>
 
-<a name="generate"></a>
+<a name="module_readme-generator.generate"></a>
 
-## generate(config) ⇒ <code>Promise.&lt;void&gt;</code>
+### readmeGenerator.generate ⇒ <code>Promise.&lt;void&gt;</code>
 Writes rendered README markdown to file
 
 **Throws**:
@@ -33,33 +33,79 @@ Writes rendered README markdown to file
 
 | Param | Type | Description |
 | --- | --- | --- |
-| config | [<code>Configuration</code>](#Configuration) | The configuration object |
+| config | <code>Configuration</code> | The configuration object |
 
-<a name="render"></a>
+**Example**  
+```js
+const result = await readmeGenerator.generate({
+  // Your options
+  // ...
+})
+// => output to README.md file
+```
+<a name="module_readme-generator.render"></a>
 
-## render(config) ⇒ <code>Promise.&lt;(string\|Error)&gt;</code>
+### readmeGenerator.render ⇒ <code>Promise.&lt;(string\|Error)&gt;</code>
 Render README markdown
 
 **Returns**: <code>Promise.&lt;(string\|Error)&gt;</code> - Returns the rendered markdown as string or Error thrown when calling `ejs.renderFile` method  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| config | [<code>Configuration</code>](#Configuration) | Same as generate config but `fileName` and `destFolder` option are just ignored |
+| config | <code>Configuration</code> | Same as generate config but `fileName` and `destFolder` option are just ignored |
 
-<a name="processConfig"></a>
+**Example**  
+```js
+const result = await readmeGenerator.render({
+  // Your options
+  // ...
+})
+```
+<a name="module_readme-generator.processConfig"></a>
 
-## processConfig(config) ⇒ [<code>Configuration</code>](#Configuration)
+### readmeGenerator.processConfig ⇒ <code>Configuration</code>
 Takes a custom config as unique parameter and merges it with the default configuration object.
 
-**Returns**: [<code>Configuration</code>](#Configuration) - Returns the processed configuration  
+**Returns**: <code>Configuration</code> - Returns the processed configuration  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| config | [<code>Configuration</code>](#Configuration) | The config object to process |
+| config | <code>Configuration</code> | The config object to process |
 
-<a name="Configuration"></a>
+**Example**  
+```js
+const processedConfig = await readmeGenerator.processConfig({
+  // Your config
+  // ...
+})
+// => returns the processed config object
+```
+<a name="module_readme-generator.defaultConfig"></a>
 
-## Configuration : <code>object</code>
+### readmeGenerator.defaultConfig : <code>Configuration</code>
+Returns the default configuration object.
+This base configuration is used by `processConfig` method and so `generate` and `render` methods.
+See also [Configuration](#module_readme-generator..Configuration) defaults.
+
+<a name="module_readme-generator.defaultEjsData"></a>
+
+### readmeGenerator.defaultEjsData : <code>object</code>
+Returns the default EJS data object.
+This base EJS data object is used by `render` methods and merged with user provided EJS data.
+
+<a name="module_readme-generator.defaultEjsData.$utils"></a>
+
+#### defaultEjsData.$utils : <code>object</code>
+Contains all methods from `markdown-utils` package plus the following:
+
+- `table`: from `markdown-table` package
+- `asciiTree`: from `ascii-tree` package, see documentation: https://www.npmjs.com/package/ascii-tree
+
+<a name="module_readme-generator..Configuration"></a>
+
+### readme-generator~Configuration : <code>object</code>
+Configuration object definition
+
 **Properties**
 
 | Name | Type | Description |
@@ -68,5 +114,7 @@ Takes a custom config as unique parameter and merges it with the default configu
 | [destFolder] | <code>string</code> | Output path, default is process.cwd (project root). Only for "generate" method |
 | [templatePath] | <code>string</code> | Template path: default is .docs/readme/template.md |
 | [ejsDataPath] | <code>string</code> | Path to EJS data file: default is .docs/readme/data.js |
-| [ejsOptions] | <code>object</code> | EJS options: see also https://www.npmjs.com/package/ejs#options |
+| [ejsOptions] | <code>object</code> | EJS options: see also https://www.npmjs.com/package/ejs#options. Default "root" option contains your template folder path. |
+| [appendDontEditMessage] | <code>boolean</code> | If true, append "don't edit" message to rendered markdown. Default is true. |
+| [autoToc] | <code>boolean</code> | If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is true. |
 
