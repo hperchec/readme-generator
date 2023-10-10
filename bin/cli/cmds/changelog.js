@@ -1,4 +1,4 @@
-const path = require('path')
+const chalk = require('chalk')
 const execa = require('execa')
 
 const rootDir = process.cwd()
