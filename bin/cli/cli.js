@@ -32,17 +32,17 @@ const cli = yargs
   .usage(`${getBanner()}\nUsage: $0 [ <options> | init [ <options> ] ]`)
   .help()
   .commandDir('cmds')
-  .options({
-    'config': {
-      alias: 'c',
-      describe: 'Specify the configuration file',
-      default: `${defaultInitTargetRelativePath}/config.js` // Default path to user config
-    }
-  })
   // Default command
   .command({
-    command: '$0', 
+    command: '$0',
     describe: 'Generate README file',
+    builder: (_yargs) => {
+      return _yargs.option('config', {
+        alias: 'c',
+        describe: 'Specify the configuration file',
+        default: `${defaultInitTargetRelativePath}/config.js` // Default path to user config
+      })
+    },
     handler: async (argv) => {
       // Get config path
       const configPath = path.join(rootDir, argv.config)
@@ -52,6 +52,5 @@ const cli = yargs
       await readmeGenerator(config)
     }
   })
-
 
 module.exports = cli
