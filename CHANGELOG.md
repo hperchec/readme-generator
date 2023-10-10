@@ -1,3 +1,7 @@
+# [2.0.0-beta.0](https://github.com/herveperchec/readme-generator/compare/v2.0.0-beta...v2.0.0-beta.0) (2023-10-10)
+
+
+
 # [2.0.0-beta](https://github.com/herveperchec/readme-generator/compare/v1.0.4...v2.0.0-beta) (2023-10-10)
 
 
