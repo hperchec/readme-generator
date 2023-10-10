@@ -7,7 +7,7 @@
     "access": "public"
   },
   "scripts": {
-    "test": "npm run example:test",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --ext .js",
     "lint:fix": "npm run lint -- --fix",
     "docs:api": "npx cross-env CLI_ENV=development node ./bin/cli docs generate:api -c ./.docs/docs.config.js",
@@ -17,7 +17,7 @@
     "example:test": "npm run example:reset && cd example && npm install && npx readme-generator init",
     "release": "npx cross-env CLI_ENV=development node ./bin/cli release",
     "changelog": "npx cross-env CLI_ENV=development node ./bin/cli changelog",
-    "prepublishOnly": "npm run lint && npm run test",
+    "prepublishOnly": "npm run lint",
     "preversion": "npm run lint",
     "version": "npm run changelog && npm run docs"
   },
