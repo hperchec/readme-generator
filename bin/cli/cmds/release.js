@@ -58,7 +58,26 @@ const command = {
     ]
 
     /**
-     * First, check if local repository is clean
+     * First, check current branch (skip in dry mode)
+     */
+    if (!argv.dry) {
+      console.log('Checking branch')
+      const checkBranchResult = await execa('git',
+        [ 'branch', '--show-current' ],
+        { stdio: 'pipe', cwd: rootDir }
+      )
+      console.log('current branch name : ', checkBranchResult.stdout)
+      process.exit()
+      if (checkBranchResult.stdout) {
+        console.error('Please commit your changes before creating a new release!', new Error('There are changes to commit'))
+        process.exit(1)
+      }
+      console.log(chalk.green('✔ Local repository is clean'))
+      console.log() // Blank line
+    }
+
+    /**
+     * Then, check if local repository is clean
      */
     console.log('Checking changes to commit')
     const { stdout } = await execa('git',
