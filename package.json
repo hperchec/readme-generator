@@ -4,14 +4,16 @@
   "description": "A useful README file generator using .ejs template",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js src",
-    "dev": "npm run lint && npm run readme",
+    "test": "npm run example:test",
+    "lint": "npx eslint . --ext .js",
+    "lint:fix": "npm run lint -- --fix",
+    "docs:api": "npx cross-env CLI_ENV=development node ./bin/cli docs generate:api -c ./.docs/docs.config.js",
+    "docs:readme": "node bin/cli --config ./.docs/readme/config.js",
+    "docs": "npm run docs:readme && npm run docs:api",
     "example:reset": "git checkout --no-overlay -- example && cd example && git clean -fdX",
-    "example:test": "npm run example:reset && cd example && npx readme-generator init",
-    "readme": "node bin/cli.js --config ./src/config.js",
-    "readme-init": "cross-env NODE_ENV=development node bin/cli.js init",
-    "start": "npm run dev"
+    "example:test": "npm run example:reset && cd example && npm install && npx readme-generator init",
+    "release": "npx cross-env CLI_ENV=development node ./bin/cli release",
+    "changelog": "npx cross-env CLI_ENV=development node ./bin/cli changelog"
   },
   "repository": {
     "type": "git",
@@ -24,9 +26,9 @@
     "generator"
   ],
   "author": {
-    "name" : "Hervé Perchec",
-    "email" : "contact@herve-perchec.com",
-    "url" : "http://herve-perchec.com/"
+    "name": "Hervé Perchec",
+    "email": "contact@herve-perchec.com",
+    "url": "http://herve-perchec.com/"
   },
   "contributors": [],
   "license": "ISC",
@@ -35,16 +37,18 @@
   },
   "homepage": "https://github.com/herveperchec/readme-generator#readme",
   "bin": {
-    "readme-generator": "./bin/cli.js"
+    "readme-generator": "./bin/cli/index.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
     "ejs": "^3.1.3",
+    "execa": "^5.1.1",
     "lodash.merge": "^4.6.2",
     "yargonaut": "^1.1.4",
     "yargs": "^15.3.1"
   },
   "devDependencies": {
+    "@hperchec/jsdoc-plugin-define": "^1.0.1",
     "ascii-tree": "^0.3.0",
     "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
