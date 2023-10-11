@@ -9,7 +9,7 @@
  * @type {object}
  * @typicalname readmeGenerator
  * @description
- * From: @hperchec/readme-generator@{{{{VERSION}}}}
+ * From: `@hperchec/readme-generator@{{{{VERSION}}}}`
  * @example
  * const readmeGenerator = require('@hperchec/readme-generator')
  */
@@ -19,13 +19,16 @@
 /**
  * Configuration object definition
  * @typedef {object} Configuration
- * @property {string} [fileName] - Output file name: 'README.md' by default. Only for "generate" method
- * @property {string} [destFolder] - Output path, default is process.cwd (project root). Only for "generate" method
- * @property {string} [templatePath] - Template path: default is .docs/readme/template.md
- * @property {string} [ejsDataPath] -  Path to EJS data file: default is .docs/readme/data.js
- * @property {object} [ejsOptions] - EJS options: see also https://www.npmjs.com/package/ejs#options. Default "root" option contains your template folder path.
- * @property {boolean} [appendDontEditMessage] - If true, append "don't edit" message to rendered markdown. Default is true.
- * @property {boolean} [autoToc] - If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is true.
+ * @property {string} [fileName] - Output file name: `README.md` by default. Only for **generate** method
+ * @property {string} [destFolder] - Output path, default is `process.cwd` (project root). Only for **generate** method
+ * @property {string} [templatePath] - Template path: default is `.docs/readme/template.md`
+ * @property {string} [ejsDataPath] -  Path to EJS data file: default is `.docs/readme/data.js`
+ * @property {object} [ejsOptions] - EJS options: see also {@link https://www.npmjs.com/package/ejs#options EJS documentation}.
+ * @property {string[]} [ejsOptions.root] - The path of template folder is automatically included.
+ * @property {string[]} [ejsOptions.views] - The path of template folder and the path of internal partials are automatically included.
+ * @property {boolean} [appendDontEditMessage] - If true, append "don't edit" message to rendered markdown. Default is **true**.
+ * @property {boolean} [autoToc] - If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is **true**.
+ * The `markdown-toc` package is used for this feature, check the {@link https://www.npmjs.com/package/markdown-toc documentation}.
  */
 
 // Dependencies
@@ -266,10 +269,26 @@ const defaultEjsData = exports.defaultEjsData = {
    * @alias module:readme-generator.defaultEjsData.$utils
    * @type {object}
    * @description
-   * Contains all methods from `markdown-utils` package plus the following:
+   * Contains the following methods:
    *
-   * - `table`: from `markdown-table` package
-   * - `asciiTree`: from `ascii-tree` package, see documentation: https://www.npmjs.com/package/ascii-tree
+   * - `table`: generates a markdown table
+   * - `asciiTree`: generates an "ASCII" tree
+   * - ... all methods from `markdown-utils` package
+   *
+   * > Please check the following package documentations:
+   * > - [markdown-utils](https://github.com/jonschlinkert/markdown-utils)
+   * > - [markdown-table](https://www.npmjs.com/package/markdown-table) (⚠ v1.1.3)
+   * > - [ascii-tree](https://www.npmjs.com/package/ascii-tree)
+   * @example
+   * // Generates a blockquote
+   * $utils.blockquote('This is a blockquote')
+   * // Generates a table
+   * $utils.table([
+   *   [ 'Column 1', 'Column 2' ],
+   *   [ 'Value 1', 'Value 2' ]
+   * ])
+   * // Generates an ascii tree
+   * $utils.asciiTree('*.\n**a\n**b\n*...')
    */
   $utils: {
     // markdown-utils
