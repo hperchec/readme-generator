@@ -132,7 +132,6 @@ const command = {
     ])
     if (!yes) {
       process.exit()
-      return // exit if not confirmed
     }
     console.log() // Blank line
 
@@ -140,6 +139,7 @@ const command = {
      * Update version in necessary files
      */
     console.log('Bump version')
+
     await execa('npm',
       [
         ...(argv.dry ? [ '--no-git-tag-version' ] : []),
@@ -164,21 +164,20 @@ const command = {
 
     let alreadyPublished = false
 
-    const publishResult = await execa('npm',
-      [
-        'publish',
-        ...(argv.dry ? [ '--dry-run' ] : []),
-        ...(releaseTag ? [ '--tag', releaseTag ] : [])
-      ],
-      { stdio: 'pipe', cwd: rootDir }
-    )
-
-    // If error
-    if (publishResult.stderr) {
-      if (publishResult.stderr.match(/previously published/)) {
+    try {
+      await execa('npm',
+        [
+          'publish',
+          ...(argv.dry ? [ '--dry-run' ] : []),
+          ...(releaseTag ? [ '--tag', releaseTag ] : [])
+        ],
+        { stdio: 'pipe', cwd: rootDir }
+      )
+    } catch (error) {
+      if (error.match(/previously published/)) {
         alreadyPublished = true
       } else {
-        console.error('Unknown error during publishing', publishResult.stderr)
+        console.error('Unknown error during publishing', error)
         process.exit(1)
       }
     }
