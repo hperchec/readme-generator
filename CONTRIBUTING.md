@@ -2,6 +2,10 @@
 
 Hello 👋
 
+## Commit convention
+
+See project [commit convention](./COMMIT_CONVENTION.md)
+
 ## Development
 
 Work in progress...
