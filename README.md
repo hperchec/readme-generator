@@ -112,11 +112,8 @@ The exported data object will be merged into default passed to EJS. See also the
 
 // Import package.json data
 const pkg = require('../../package.json')
-// Repository URL
 const repositoryUrl = pkg.repository.url
-// Get dependencies
 const dependencies = pkg.dependencies || {}
-// Get dev dependencies
 const devDependencies = pkg.devDependencies || {}
 
 /**
@@ -127,7 +124,6 @@ module.exports = {
   repositoryUrl,
   dependencies,
   devDependencies
-  /* ... */
 }
 ```
 
@@ -269,7 +265,7 @@ The following have been renamed:
 
 ## 🤝 Contributing
 
-> Please check the [contribution guide](./CONTRIBUTING.md)
+> Please check the [contributing guidelines](./CONTRIBUTING.md)
 
 ## 🎖 License
 
@@ -277,7 +273,7 @@ ISC
 
 ----
 
-Made with ❤ by Hervé Perchec <herve.perchec@gmail.com>
+Made with ❤ by [Hervé Perchec](https://github.com/hperchec)
 
 ----
 
