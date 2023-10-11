@@ -17,14 +17,19 @@ It is partially inspired from and sounds like a "lightweight" version specially 
 
 👇 **Table of contents:**
 
+- [🚀 Get started](#-get-started)
+- [⚙ Configuration](#-configuration)
+- [🧩 EJS template](#-ejs-template)
+  - [Data](#data)
+  - [Template](#template)
     - [Built-in EJS partials](#built-in-ejs-partials)
-- [🌠 Generate README](#%F0%9F%8C%A0-generate-readme)
-- [🦾 API](#%F0%9F%A6%BE-api)
-- [⏫ Migrate from v1](#%E2%8F%AB-migrate-from-v1)
-- [🧱 Dependencies](#%F0%9F%A7%B1-dependencies)
-- [🧪 Next features](#%F0%9F%A7%AA-next-features)
-- [🤝 Contributing](#%F0%9F%A4%9D-contributing)
-- [🎖 License](#%F0%9F%8E%96-license)
+- [🌠 Generate README](#-generate-readme)
+- [🦾 API](#-api)
+- [⏫ Migrate from v1](#-migrate-from-v1)
+- [🧱 Dependencies](#-dependencies)
+- [🧪 Next features](#-next-features)
+- [🤝 Contributing](#-contributing)
+- [🎖 License](#-license)
 
 ## 🚀 Get started
 
@@ -138,14 +143,7 @@ Make your own template in `./.docs/readme/template.md` file:
 
 👇 **Table of contents:**
 
-    - [Built-in EJS partials](#built-in-ejs-partials)
-- [🌠 Generate README](#%F0%9F%8C%A0-generate-readme)
-- [🦾 API](#%F0%9F%A6%BE-api)
-- [⏫ Migrate from v1](#%E2%8F%AB-migrate-from-v1)
-- [🧱 Dependencies](#%F0%9F%A7%B1-dependencies)
-- [🧪 Next features](#%F0%9F%A7%AA-next-features)
-- [🤝 Contributing](#%F0%9F%A4%9D-contributing)
-- [🎖 License](#%F0%9F%8E%96-license)
+<!-- toc -->
 
 ## Get started
 
@@ -171,14 +169,9 @@ Clone this [repository](<%= repositoryUrl %>) and install via `npm install`
 <details>
 ```
 
-The `    - [Built-in EJS partials](#built-in-ejs-partials)
-- [🌠 Generate README](#%F0%9F%8C%A0-generate-readme)
-- [🦾 API](#%F0%9F%A6%BE-api)
-- [⏫ Migrate from v1](#%E2%8F%AB-migrate-from-v1)
-- [🧱 Dependencies](#%F0%9F%A7%B1-dependencies)
-- [🧪 Next features](#%F0%9F%A7%AA-next-features)
-- [🤝 Contributing](#%F0%9F%A4%9D-contributing)
-- [🎖 License](#%F0%9F%8E%96-license)` special comment will be replaced by auto-generated table of contents. See configuration documentation.
+The `<!-- toc -->` special comment will be replaced by auto-generated table of contents. See configuration documentation.
+
+> ❕ **NOTE**: You can escape special toc comment by adding a backslash before the exclamation point "!" like: `<\!--`.
 
 #### Built-in EJS partials
 
@@ -221,6 +214,7 @@ The following have been renamed:
 | ejs            | ^3.1.9  |
 | execa          | ^5.1.1  |
 | fs-extra       | ^11.1.1 |
+| github-slugger | ^1.5.0  |
 | lodash.merge   | ^4.6.2  |
 | markdown-table | ^1.1.3  |
 | markdown-toc   | ^1.2.0  |

@@ -148,11 +148,47 @@ const render = exports.render = async function (config) {
       // See https://github.com/jonschlinkert/markdown-toc/pull/192
       // So, as we can't use insert method for the moment, we generate our own toc
       // with the help of markdown-toc utils
+
+      const escapeTocComment = (comment) => {
+        // <!-- toc --> = <\!-- toc -->
+        const parsable = comment.match(/<!-- toc -->/)
+        if (parsable) {
+          return '<\\!-- toc -->'
+        }
+        // <\!-- toc --> = <\\!-- toc -->
+        const isAlreadyEscaped = comment.match(/<\\!-- toc -->/)
+        if (isAlreadyEscaped) {
+          return '<\\\\!-- toc -->'
+        }
+        // Else return as is
+        return comment
+      }
+
+      const unescapeTocComment = (comment) => {
+        // <\!-- toc --> = <!-- toc -->
+        const isEscaped = comment.match(/<\\!-- toc -->/)
+        if (isEscaped) {
+          return '<!-- toc -->'
+        }
+        // <\\!-- toc --> = <\!-- toc -->
+        const isDoubleEscaped = comment.match(/<\\\\!-- toc -->/)
+        if (isDoubleEscaped) {
+          return '<\\!-- toc -->'
+        }
+        // Else return as is
+        return comment
+      }
+
+      // First, escape toc comments from content
+      content = content.replaceAll(/<[\\]?!-- toc -->/g, escapeTocComment)
+
+      // Then parse with markdown-toc
       const tocTokens = markdownToc(content)
         .json
         .filter((tok) => tok.lvl > 1) // keep only min h2
         .map((tok) => markdownToc.linkify(tok, { slugify: processedConfig.slugify })) // linkify content (accepts custom slugger)
 
+      // Generate bullets
       const bullets = markdownToc.bullets(tocTokens, {
         firsth1: false,
         highest: 1, // force to 1 to ignore h1
@@ -160,8 +196,14 @@ const render = exports.render = async function (config) {
         chars: '-'
       })
 
+      // Revert toc comments escaping
+      content = content.replaceAll(/<[\\]{1,2}!-- toc -->/g, unescapeTocComment)
+
       // Find "<!-- toc -->" special comment in template
       content = content.replace(/(?:<!-- toc -->)/g, bullets)
+
+      // Finally, unescape volontary escaped toc comments
+      content = content.replaceAll(/<\\!-- toc -->/g, unescapeTocComment)
     }
 
     return content
