@@ -12,18 +12,19 @@ const readmeGenerator = require('@hperchec/readme-generator')
 
 * [readme-generator](#module_readme-generator) : <code>object</code>
     * _static_
-        * [.generate](#module_readme-generator.generate) ⇒ <code>Promise.&lt;void&gt;</code>
-        * [.render](#module_readme-generator.render) ⇒ <code>Promise.&lt;(string\|Error)&gt;</code>
+        * [.generate](#module_readme-generator.generate) ⇒ <code>void</code>
+        * [.render](#module_readme-generator.render) ⇒ <code>string</code>
         * [.processConfig](#module_readme-generator.processConfig) ⇒ <code>Configuration</code>
         * [.defaultConfig](#module_readme-generator.defaultConfig) : <code>Configuration</code>
         * [.defaultEjsData](#module_readme-generator.defaultEjsData) : <code>object</code>
+            * [.$config](#module_readme-generator.defaultEjsData.$config) : <code>Configuration</code>
             * [.$utils](#module_readme-generator.defaultEjsData.$utils) : <code>object</code>
     * _inner_
         * [~Configuration](#module_readme-generator..Configuration) : <code>object</code>
 
 <a name="module_readme-generator.generate"></a>
 
-### readmeGenerator.generate ⇒ <code>Promise.&lt;void&gt;</code>
+### readmeGenerator.generate ⇒ <code>void</code>
 Writes rendered README markdown to file
 
 **Throws**:
@@ -37,7 +38,7 @@ Writes rendered README markdown to file
 
 **Example**  
 ```js
-const result = await readmeGenerator.generate({
+const result = readmeGenerator.generate({
   // Your options
   // ...
 })
@@ -45,10 +46,10 @@ const result = await readmeGenerator.generate({
 ```
 <a name="module_readme-generator.render"></a>
 
-### readmeGenerator.render ⇒ <code>Promise.&lt;(string\|Error)&gt;</code>
+### readmeGenerator.render ⇒ <code>string</code>
 Render README markdown
 
-**Returns**: <code>Promise.&lt;(string\|Error)&gt;</code> - Returns the rendered markdown as string or Error thrown when calling `ejs.renderFile` method  
+**Returns**: <code>string</code> - Returns the rendered markdown as string  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -56,7 +57,7 @@ Render README markdown
 
 **Example**  
 ```js
-const result = await readmeGenerator.render({
+const result = readmeGenerator.render({
   // Your options
   // ...
 })
@@ -74,7 +75,7 @@ Takes a custom config as unique parameter and merges it with the default configu
 
 **Example**  
 ```js
-const processedConfig = await readmeGenerator.processConfig({
+const processedConfig = readmeGenerator.processConfig({
   // Your config
   // ...
 })
@@ -93,6 +94,22 @@ See also [Configuration](#module_readme-generator..Configuration) defaults.
 Returns the default EJS data object.
 This base EJS data object is used by `render` methods and merged with user provided EJS data.
 
+
+* [.defaultEjsData](#module_readme-generator.defaultEjsData) : <code>object</code>
+    * [.$config](#module_readme-generator.defaultEjsData.$config) : <code>Configuration</code>
+    * [.$utils](#module_readme-generator.defaultEjsData.$utils) : <code>object</code>
+
+<a name="module_readme-generator.defaultEjsData.$config"></a>
+
+#### defaultEjsData.$config : <code>Configuration</code>
+Contains the default configuration by default.
+Will be merged with custom configuration when using `generate` or `render` method.
+
+**Example**  
+```js
+// Access configuration
+$config.fileName // => README.md
+```
 <a name="module_readme-generator.defaultEjsData.$utils"></a>
 
 #### defaultEjsData.$utils : <code>object</code>
@@ -135,7 +152,7 @@ Configuration object definition
 | [ejsOptions] | <code>object</code> | EJS options: see also [EJS documentation](https://www.npmjs.com/package/ejs#options). |
 | [ejsOptions.root] | <code>Array.&lt;string&gt;</code> | The path of template folder is automatically included. |
 | [ejsOptions.views] | <code>Array.&lt;string&gt;</code> | The path of template folder and the path of internal partials are automatically included. |
-| [appendDontEditMessage] | <code>boolean</code> | If true, append "don't edit" message to rendered markdown. Default is **true**. |
+| [appendAutoGenMessage] | <code>boolean</code> | If true, append "don't edit" message to rendered markdown. Default is **true**. |
 | [autoToc] | <code>boolean</code> | If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is **true**. The `markdown-toc` package is used for this feature, check the [documentation](https://www.npmjs.com/package/markdown-toc). |
 | [slugify] | <code>function</code> | If provided, will be used by `markdown-toc` to slugify headings id. Default uses `github-slugger` (⚠ v1.5.0): see [**slug** method documentation](https://github.com/Flet/github-slugger#usage). |
 

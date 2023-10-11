@@ -130,7 +130,9 @@ module.exports = {
 
 ### Template
 
-Make your own template in `<%= defaultInitTargetRelativePath %>/template.md` file:
+Make your own template in `<%= defaultInitTargetRelativePath %>/template.md` file.
+
+**Example**:
 
 ```markdown
 <%%# 
@@ -169,7 +171,6 @@ Clone this [repository](<%%= repositoryUrl %>) and install via `npm install`
 
 The `<\!-- toc -->` special comment will be replaced by auto-generated table of contents. See configuration documentation.
 
-> ❕ **NOTE**: You can escape special toc comment by adding a backslash before the exclamation point "!" such as: `<\\\\!-- toc -->`.
 > ❕ **NOTE**: You can escape special toc comment by adding a backslash before the exclamation point "!" like: `<\!--`.
 
 #### Built-in EJS partials
