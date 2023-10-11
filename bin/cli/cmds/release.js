@@ -193,6 +193,8 @@ const command = {
 
     console.log(chalk.green(`Release v${targetVersion} successfuly created`))
     console.log()
+    console.log('You should now run the command: ' + chalk.yellow('git push --follow-tags'))
+    console.log()
   }
 }
 
