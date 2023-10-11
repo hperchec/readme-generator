@@ -17,14 +17,12 @@ It is partially inspired from and sounds like a "lightweight" version specially 
 
 👇 **Table of contents:**
 
-- [🚀 Get started](#%F0%9F%9A%80-get-started)
-- [⚙ Configuration](#%E2%9A%99-configuration)
-- [🧩 EJS template](#%F0%9F%A7%A9-ejs-template)
-  - [Data](#data)
-  - [Template](#template)
+    - [Built-in EJS partials](#built-in-ejs-partials)
+- [🌠 Generate README](#%F0%9F%8C%A0-generate-readme)
 - [🦾 API](#%F0%9F%A6%BE-api)
 - [⏫ Migrate from v1](#%E2%8F%AB-migrate-from-v1)
 - [🧱 Dependencies](#%F0%9F%A7%B1-dependencies)
+- [🧪 Next features](#%F0%9F%A7%AA-next-features)
 - [🤝 Contributing](#%F0%9F%A4%9D-contributing)
 - [🎖 License](#%F0%9F%8E%96-license)
 
@@ -62,41 +60,33 @@ Add a script to your `package.json` file:
 ```bash
 {
   "scripts": {
-    # Other scripts...
     # 'npm run readme' will generates your README.md file
-    "readme": "readme-generator --config ./.docs/readme/config.js"
+    "readme": "readme-generator --config ./.docs/readme/config.js",
+    # ...
   }
 }
 ```
 
 ## ⚙ Configuration
 
-You can pass custom configuration in the `./.docs/readme/config.js` file (all keys are optional):
+You can pass custom configuration in the `./.docs/readme/config.js` file (all keys are optional).
+
+**Example**:
 
 ```js
+/**
+ * .docs/readme/config.js
+ */
+
 module.exports = {
   /**
    * Output file name: 'README.md' by default
    */
-  fileName: 'README.md',
-  /**
-   * Output path, default is process.cwd() (project root)
-   */
-  destFolder: path.resolve(__dirname, '../../'),
-  /**
-   * Template path: default is ./.docs/readme/template.md
-   */
-  templatePath: path.resolve(__dirname, './template.md'),
-  /**
-   * Path to EJS data file: default is ./.docs/readme/data.js
-   */
-  ejsDataPath: path.resolve(__dirname, './data.js'),
-  /**
-   * EJS options: see also https://www.npmjs.com/package/ejs#options
-   */
-  ejsOptions: { /* ... */ }
+  fileName: 'README.md'
 }
 ```
+
+> ❕ **NOTE**: Please check also the [documentation](./documentation/api.md) to learn more about configuration.
 
 ## 🧩 EJS template
 
@@ -104,60 +94,58 @@ This library uses [EJS](https://ejs.co/) as template engine.
 
 ### Data
 
-Export your (ejs) data in `./.docs/readme/data.js` file:
+Export your (ejs) data in the `./.docs/readme/data.js` file.
+
+The exported data object will be merged into default passed to EJS. See also the EJS data relative [documentation](./documentation/api.md).
+
+**Example**:
 
 ```js
-'use strict'
+/**
+ * .docs/readme/data.js
+ */
 
-// Dependencies
-const markdownTable = require('markdown-table')
-
-// Based on the package.json file, get some data and informations
-const packageJson = require('../package.json')
-// Get dependencies
-const dependencies = packageJson.dependencies
-// Get dev dependencies
-const devDependencies = packageJson.devDependencies
-// Homepage
-const homepage = packageJson.homepage
+// Import package.json data
+const pkg = require('../../package.json')
 // Repository URL
-const repositoryUrl = packageJson.repository.url
-
-// Output a markdown formatted table from a js object
-// Like:
-// |name|version|
-// |----|-------|
-// |    |       |
-function mdDependencies (deps) {
-  return markdownTable([
-    ['name', 'version'],
-    ...(Object.entries(deps))
-  ])
-}
+const repositoryUrl = pkg.repository.url
+// Get dependencies
+const dependencies = pkg.dependencies || {}
+// Get dev dependencies
+const devDependencies = pkg.devDependencies || {}
 
 /**
  * Export data for readme file templating
  */
 module.exports = {
-  projectUrl: homepage,
-  repositoryUrl: repositoryUrl,
-  dependencies: mdDependencies(dependencies),
-  devDependencies: mdDependencies(devDependencies)
+  pkg,
+  repositoryUrl,
+  dependencies,
+  devDependencies
   /* ... */
 }
-
 ```
 
 ### Template
 
-And use it in your `./.docs/readme/template.md` file:
+Make your own template in `./.docs/readme/template.md` file:
 
 ```markdown
+<%# 
+  README.md template
+-%>
 # Awesome project!
 
-[![pipeline status](<%= projectUrl %>badges/master/pipeline.svg)](<%= projectUrl %>commits/master)
+👇 **Table of contents:**
 
-🌎 Translated
+    - [Built-in EJS partials](#built-in-ejs-partials)
+- [🌠 Generate README](#%F0%9F%8C%A0-generate-readme)
+- [🦾 API](#%F0%9F%A6%BE-api)
+- [⏫ Migrate from v1](#%E2%8F%AB-migrate-from-v1)
+- [🧱 Dependencies](#%F0%9F%A7%B1-dependencies)
+- [🧪 Next features](#%F0%9F%A7%AA-next-features)
+- [🤝 Contributing](#%F0%9F%A4%9D-contributing)
+- [🎖 License](#%F0%9F%8E%96-license)
 
 ## Get started
 
@@ -169,28 +157,44 @@ Clone this [repository](<%= repositoryUrl %>) and install via `npm install`
 
 <summary>Global</summary>
 
-<%= dependencies %>
+<%-
+  include('common/table.md', {
+    options: [
+      ['name', 'version'],
+      ...(Object.entries(dependencies))
+    ]
+  })
+%>
 
 </details>
-
 
 <details>
-
-<summary>Dev</summary>
-
-<%= devDependencies %>
-
-</details>
-
 ```
 
-GO
+The `    - [Built-in EJS partials](#built-in-ejs-partials)
+- [🌠 Generate README](#%F0%9F%8C%A0-generate-readme)
+- [🦾 API](#%F0%9F%A6%BE-api)
+- [⏫ Migrate from v1](#%E2%8F%AB-migrate-from-v1)
+- [🧱 Dependencies](#%F0%9F%A7%B1-dependencies)
+- [🧪 Next features](#%F0%9F%A7%AA-next-features)
+- [🤝 Contributing](#%F0%9F%A4%9D-contributing)
+- [🎖 License](#%F0%9F%8E%96-license)` special comment will be replaced by auto-generated table of contents. See configuration documentation.
+
+#### Built-in EJS partials
+
+There are some partials used by default with EJS:
+
+- `common/table.md`: render a table with `markdown-table` package
+
+## 🌠 Generate README
 
 ```bash
 npm run readme
 ```
 
 Enjoy! 👍
+
+> ❕ **NOTE**: The README file will be overwritten every time the command is runned.
 
 ## 🦾 API
 
@@ -231,22 +235,26 @@ The following have been renamed:
 
 <summary>Dev</summary>
 
-| name                          | version  |
-| ----------------------------- | -------- |
-| @hperchec/jsdoc-plugin-define | ^1.0.1   |
-| ascii-tree                    | ^0.3.0   |
-| conventional-changelog-cli    | ^4.1.0   |
-| cross-env                     | ^7.0.3   |
-| eslint                        | ^8.51.0  |
-| eslint-config-standard        | ^17.1.0  |
-| eslint-plugin-disable         | ^2.0.3   |
-| eslint-plugin-import          | ^2.28.1  |
-| eslint-plugin-jsdoc           | ^46.8.2  |
-| eslint-plugin-node            | ^11.1.0  |
-| eslint-plugin-promise         | ^6.1.1   |
-| eslint-plugin-standard        | ^4.1.0   |
-| jsdoc-to-markdown             | ^8.0.0   |
-| npm-check-updates             | ^16.14.5 |
+| name                            | version  |
+| ------------------------------- | -------- |
+| @commitlint/cli                 | ^17.7.2  |
+| @commitlint/config-conventional | ^17.7.0  |
+| @hperchec/jsdoc-plugin-define   | ^1.0.1   |
+| ascii-tree                      | ^0.3.0   |
+| conventional-changelog-cli      | ^4.1.0   |
+| cross-env                       | ^7.0.3   |
+| eslint                          | ^8.51.0  |
+| eslint-config-standard          | ^17.1.0  |
+| eslint-plugin-disable           | ^2.0.3   |
+| eslint-plugin-import            | ^2.28.1  |
+| eslint-plugin-jsdoc             | ^46.8.2  |
+| eslint-plugin-node              | ^11.1.0  |
+| eslint-plugin-promise           | ^6.1.1   |
+| eslint-plugin-standard          | ^4.1.0   |
+| jsdoc-to-markdown               | ^8.0.0   |
+| lint-staged                     | ^14.0.1  |
+| npm-check-updates               | ^16.14.5 |
+| simple-git-hooks                | ^2.9.0   |
 
 </details>
 
@@ -258,6 +266,10 @@ The following have been renamed:
 | ---- | ------- |
 
 </details>
+
+## 🧪 Next features
+
+- presets ? (GitHub/GitLab)
 
 ## 🤝 Contributing
 

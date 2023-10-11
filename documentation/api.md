@@ -3,7 +3,7 @@
 <a name="module_readme-generator"></a>
 
 ## readme-generator : <code>object</code>
-From: @hperchec/readme-generator@2.0.0-beta.1
+From: `@hperchec/readme-generator@2.0.0-beta.1`
 
 **Example**  
 ```js
@@ -96,11 +96,29 @@ This base EJS data object is used by `render` methods and merged with user provi
 <a name="module_readme-generator.defaultEjsData.$utils"></a>
 
 #### defaultEjsData.$utils : <code>object</code>
-Contains all methods from `markdown-utils` package plus the following:
+Contains the following methods:
 
-- `table`: from `markdown-table` package
-- `asciiTree`: from `ascii-tree` package, see documentation: https://www.npmjs.com/package/ascii-tree
+- `table`: generates a markdown table
+- `asciiTree`: generates an "ASCII" tree
+- ... all methods from `markdown-utils` package
 
+> Please check the following package documentations:
+> - [markdown-utils](https://github.com/jonschlinkert/markdown-utils)
+> - [markdown-table](https://www.npmjs.com/package/markdown-table) (⚠ v1.1.3)
+> - [ascii-tree](https://www.npmjs.com/package/ascii-tree)
+
+**Example**  
+```js
+// Generates a blockquote
+$utils.blockquote('This is a blockquote')
+// Generates a table
+$utils.table([
+  [ 'Column 1', 'Column 2' ],
+  [ 'Value 1', 'Value 2' ]
+])
+// Generates an ascii tree
+$utils.asciiTree('*.\n**a\n**b\n*...')
+```
 <a name="module_readme-generator..Configuration"></a>
 
 ### readme-generator~Configuration : <code>object</code>
@@ -110,11 +128,13 @@ Configuration object definition
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [fileName] | <code>string</code> | Output file name: 'README.md' by default. Only for "generate" method |
-| [destFolder] | <code>string</code> | Output path, default is process.cwd (project root). Only for "generate" method |
-| [templatePath] | <code>string</code> | Template path: default is .docs/readme/template.md |
-| [ejsDataPath] | <code>string</code> | Path to EJS data file: default is .docs/readme/data.js |
-| [ejsOptions] | <code>object</code> | EJS options: see also https://www.npmjs.com/package/ejs#options. Default "root" option contains your template folder path. |
-| [appendDontEditMessage] | <code>boolean</code> | If true, append "don't edit" message to rendered markdown. Default is true. |
-| [autoToc] | <code>boolean</code> | If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is true. |
+| [fileName] | <code>string</code> | Output file name: `README.md` by default. Only for **generate** method |
+| [destFolder] | <code>string</code> | Output path, default is `process.cwd` (project root). Only for **generate** method |
+| [templatePath] | <code>string</code> | Template path: default is `.docs/readme/template.md` |
+| [ejsDataPath] | <code>string</code> | Path to EJS data file: default is `.docs/readme/data.js` |
+| [ejsOptions] | <code>object</code> | EJS options: see also [EJS documentation](https://www.npmjs.com/package/ejs#options). |
+| [ejsOptions.root] | <code>Array.&lt;string&gt;</code> | The path of template folder is automatically included. |
+| [ejsOptions.views] | <code>Array.&lt;string&gt;</code> | The path of template folder and the path of internal partials are automatically included. |
+| [appendDontEditMessage] | <code>boolean</code> | If true, append "don't edit" message to rendered markdown. Default is **true**. |
+| [autoToc] | <code>boolean</code> | If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is **true**. The `markdown-toc` package is used for this feature, check the [documentation](https://www.npmjs.com/package/markdown-toc). |
 
