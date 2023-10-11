@@ -1,3 +1,13 @@
+# [2.0.0](https://github.com/herveperchec/readme-generator/compare/v2.0.0-beta.3...v2.0.0) (2023-10-11)
+
+
+### Features
+
+* add "slugify" configuration option ([d90e964](https://github.com/herveperchec/readme-generator/commit/d90e96403c9b0ec6a79b3d0516e5fed890d108f4))
+* support for escaping special TOC comments ([3b717a6](https://github.com/herveperchec/readme-generator/commit/3b717a6b86971d6aa7ed4522ffa319b71b79ee82))
+
+
+
 # [2.0.0-beta.3](https://github.com/herveperchec/readme-generator/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2023-10-11)
 
 
