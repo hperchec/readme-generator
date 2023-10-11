@@ -148,6 +148,8 @@ const command = {
       ],
       { stdio: 'pipe', cwd: rootDir }
     )
+
+    console.log(chalk.green('✔') + ' Success')
     console.log() // Blank line
 
     /**
@@ -185,11 +187,11 @@ const command = {
     console.log(
       alreadyPublished
         ? chalk.yellow(`Skipping already published: ${packageName}`)
-        : chalk.green('✔ Success')
+        : (chalk.green('✔') + ' Success')
     )
     console.log() // Blank line
 
-    console.log(chalk.green(`✔ Release v${targetVersion} successfuly created`))
+    console.log(chalk.green(`Release v${targetVersion} successfuly created`))
     console.log()
   }
 }
