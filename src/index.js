@@ -29,6 +29,8 @@
  * @property {boolean} [appendDontEditMessage] - If true, append "don't edit" message to rendered markdown. Default is **true**.
  * @property {boolean} [autoToc] - If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is **true**.
  * The `markdown-toc` package is used for this feature, check the {@link https://www.npmjs.com/package/markdown-toc documentation}.
+ * @property {Function} [slugify] - If provided, will be used by `markdown-toc` to slugify headings id.
+ * Default uses `github-slugger` (⚠ v1.5.0): see [**slug** method documentation](https://github.com/Flet/github-slugger#usage).
  */
 
 // Dependencies
@@ -41,6 +43,9 @@ const mdu = require('markdown-utils')
 const markdownTable = require('markdown-table')
 const markdownToc = require('markdown-toc')
 const asciitree = require('ascii-tree')
+const GithubSlugger = require('github-slugger') // (⚠ v1.5.0 - v2 is ESM only)
+
+const slugger = new GithubSlugger()
 
 // Constants
 const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
@@ -146,7 +151,7 @@ const render = exports.render = async function (config) {
       const tocTokens = markdownToc(content)
         .json
         .filter((tok) => tok.lvl > 1) // keep only min h2
-        .map((tok) => markdownToc.linkify(tok)) // linkify content
+        .map((tok) => markdownToc.linkify(tok, { slugify: processedConfig.slugify })) // linkify content (accepts custom slugger)
 
       const bullets = markdownToc.bullets(tocTokens, {
         firsth1: false,
@@ -212,6 +217,9 @@ const processConfig = exports.processConfig = function (config) {
   result.autoToc = config.autoToc !== undefined
     ? config.autoToc
     : defaultConfig.autoToc
+  result.slugify = config.slugify !== undefined
+    ? config.slugify
+    : defaultConfig.slugify
   return result
 }
 
@@ -254,7 +262,8 @@ const defaultConfig = exports.defaultConfig = {
     ]
   },
   appendDontEditMessage: true,
-  autoToc: true
+  autoToc: true,
+  slugify: slugger.slug.bind(slugger)
 }
 
 /**

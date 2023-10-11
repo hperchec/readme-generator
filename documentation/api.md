@@ -137,4 +137,5 @@ Configuration object definition
 | [ejsOptions.views] | <code>Array.&lt;string&gt;</code> | The path of template folder and the path of internal partials are automatically included. |
 | [appendDontEditMessage] | <code>boolean</code> | If true, append "don't edit" message to rendered markdown. Default is **true**. |
 | [autoToc] | <code>boolean</code> | If true, parse `<!-- toc -->` special comment to automatically inject generated table of contents. Default is **true**. The `markdown-toc` package is used for this feature, check the [documentation](https://www.npmjs.com/package/markdown-toc). |
+| [slugify] | <code>function</code> | If provided, will be used by `markdown-toc` to slugify headings id. Default uses `github-slugger` (⚠ v1.5.0): see [**slug** method documentation](https://github.com/Flet/github-slugger#usage). |
 
