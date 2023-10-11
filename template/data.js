@@ -2,41 +2,24 @@
  * @hperchec/readme-generator Template EJS data example file
  */
 
-'use strict'
-
-// Dependencies
-const markdownTable = require('markdown-table') // ! v3 not compatible, use v2
-
-// Based on the package.json file, get some data and informations
-const packageJson = require('../package.json')
-// Get dependencies
-const dependencies = packageJson.dependencies
-// Get dev dependencies
-const devDependencies = packageJson.devDependencies
-// Homepage
-const homepage = packageJson.homepage
+// Import package.json data
+const pkg = require('../../package.json')
 // Repository URL
-const repositoryUrl = packageJson.repository.url
-
-// Output a markdown formatted table from a js object
-// Like:
-// |name|version|
-// |----|-------|
-// |    |       |
-function mdDependencies (deps) {
-  return markdownTable([
-    [ 'name', 'version' ],
-    ...(Object.entries(deps))
-  ])
-}
+const repositoryUrl = pkg.repository.url
+const projectUrl = pkg.repository.url.match(/^[git\+]?(.*)\.git$/)[1] // find string between 'git+' and '.git'
+// Get dependencies
+const dependencies = pkg.dependencies || {}
+// Get dev dependencies
+const devDependencies = pkg.devDependencies || {}
 
 /**
  * Export data for readme file templating
  */
 module.exports = {
-  projectUrl: homepage,
+  pkg,
   repositoryUrl,
-  dependencies: mdDependencies(dependencies),
-  devDependencies: mdDependencies(devDependencies)
+  projectUrl,
+  dependencies,
+  devDependencies
   /* ... */
 }
