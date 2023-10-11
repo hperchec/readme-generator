@@ -43,13 +43,13 @@ const cli = yargs
         default: `${defaultInitTargetRelativePath}/config.js` // Default path to user config
       })
     },
-    handler: async (argv) => {
+    handler: (argv) => {
       // Get config path
       const configPath = path.join(rootDir, argv.config)
       // Get configuration object
       const config = require(configPath)
       // Call generator with config
-      await readmeGenerator(config)
+      readmeGenerator(config)
     }
   })
 
