@@ -174,10 +174,13 @@ const command = {
     )
 
     // If error
-    if (publishResult.stderr && publishResult.stderr.match(/previously published/)) {
-      alreadyPublished = true
-    } else {
-      console.error('Unknown error during publishing', publishResult.stderr)
+    if (publishResult.stderr) {
+      if (publishResult.stderr.match(/previously published/)) {
+        alreadyPublished = true
+      } else {
+        console.error('Unknown error during publishing', publishResult.stderr)
+        process.exit(1)
+      }
     }
 
     console.log(
