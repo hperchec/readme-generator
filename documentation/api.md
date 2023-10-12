@@ -3,7 +3,7 @@
 <a name="module_readme-generator"></a>
 
 ## readme-generator : <code>object</code>
-From: `@hperchec/readme-generator@2.1.0`
+From: `@hperchec/readme-generator@2.2.0`
 
 **Example**  
 ```js
@@ -32,11 +32,11 @@ Writes rendered README markdown to file
 - Throws error if render or file writing fails
 
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| config | <code>Configuration</code> \| <code>string</code> |  | The config object to process. Can be path to config file as string. |
-| [options] | <code>object</code> | <code>{}</code> | Options object |
-| [options.data] | <code>object</code> |  | Additionnal data object to merge with default EJS data |
+| Param | Type | Description |
+| --- | --- | --- |
+| config | <code>Configuration</code> \| <code>string</code> | The config object to process. Can be path to config file as string. |
+| [options] | <code>object</code> | Options object |
+| [options.data] | <code>object</code> | Additionnal data object to merge with default EJS data |
 
 **Example**  
 ```js
@@ -50,10 +50,10 @@ Render README markdown
 
 **Returns**: <code>string</code> - Returns the rendered markdown as string  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| config | <code>Configuration</code> \| <code>string</code> |  | Same as generate config but `fileName` and `destFolder` option are just ignored |
-| [options] | <code>object</code> | <code>{}</code> | Same as generate |
+| Param | Type | Description |
+| --- | --- | --- |
+| config | <code>Configuration</code> \| <code>string</code> | Same as generate config but `fileName` and `destFolder` option are just ignored |
+| [options] | <code>object</code> | Same as generate |
 
 **Example**  
 ```js

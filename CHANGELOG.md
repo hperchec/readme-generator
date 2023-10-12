@@ -1,3 +1,12 @@
+# [2.2.0](https://github.com/herveperchec/readme-generator/compare/v2.1.0...v2.2.0) (2023-10-12)
+
+
+### Features
+
+* add options param to pass additional data ([153d574](https://github.com/herveperchec/readme-generator/commit/153d574c68f31af1747634527655332053d21bf0))
+
+
+
 # [2.1.0](https://github.com/herveperchec/readme-generator/compare/v2.0.1...v2.1.0) (2023-10-12)
 
 
