@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/herveperchec/readme-generator/compare/v2.0.1...v2.1.0) (2023-10-12)
+
+
+### Features
+
+* config param can be path to file as string ([22aeebe](https://github.com/herveperchec/readme-generator/commit/22aeebe2269f0d5faf7574bb4d3cf12e497c9ca5))
+
+
+
 ## [2.0.1](https://github.com/herveperchec/readme-generator/compare/v2.0.0...v2.0.1) (2023-10-12)
 
 
