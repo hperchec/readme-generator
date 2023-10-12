@@ -34,14 +34,11 @@ Writes rendered README markdown to file
 
 | Param | Type | Description |
 | --- | --- | --- |
-| config | <code>Configuration</code> | The configuration object |
+| config | <code>Configuration</code> \| <code>string</code> | The config object to process. Can be path to config file as string. |
 
 **Example**  
 ```js
-const result = readmeGenerator.generate({
-  // Your options
-  // ...
-})
+const result = readmeGenerator.generate({ ... })
 // => output to README.md file
 ```
 <a name="module_readme-generator.render"></a>
@@ -53,14 +50,11 @@ Render README markdown
 
 | Param | Type | Description |
 | --- | --- | --- |
-| config | <code>Configuration</code> | Same as generate config but `fileName` and `destFolder` option are just ignored |
+| config | <code>Configuration</code> \| <code>string</code> | Same as generate config but `fileName` and `destFolder` option are just ignored |
 
 **Example**  
 ```js
-const result = readmeGenerator.render({
-  // Your options
-  // ...
-})
+const result = readmeGenerator.render({ ... })
 ```
 <a name="module_readme-generator.processConfig"></a>
 
@@ -71,15 +65,12 @@ Takes a custom config as unique parameter and merges it with the default configu
 
 | Param | Type | Description |
 | --- | --- | --- |
-| config | <code>Configuration</code> | The config object to process |
+| config | <code>Configuration</code> \| <code>string</code> | The config object to process. Can be path to config file as string. |
 
 **Example**  
 ```js
-const processedConfig = readmeGenerator.processConfig({
-  // Your config
-  // ...
-})
-// => returns the processed config object
+readmeGenerator.processConfig({ ... }) // pass object
+readmeGenerator.processConfig('./.docs/readme/config.js') // pass path as string
 ```
 <a name="module_readme-generator.defaultConfig"></a>
 

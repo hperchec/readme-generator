@@ -56,16 +56,13 @@ const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
 
 /**
  * @alias module:readme-generator.generate
- * @param {Configuration} config - The configuration object
+ * @param {Configuration|string} config - The config object to process. Can be path to config file as string.
  * @returns {void}
  * @throws Throws error if render or file writing fails
  * @description
  * Writes rendered README markdown to file
  * @example
- * const result = readmeGenerator.generate({
- *   // Your options
- *   // ...
- * })
+ * const result = readmeGenerator.generate({ ... })
  * // => output to README.md file
  */
 const generate = exports.generate = function (config) { // eslint-disable-line no-unused-vars
@@ -98,15 +95,12 @@ const generate = exports.generate = function (config) { // eslint-disable-line n
 
 /**
  * @alias module:readme-generator.render
- * @param {Configuration} config - Same as generate config but `fileName` and `destFolder` option are just ignored
+ * @param {Configuration|string} config - Same as generate config but `fileName` and `destFolder` option are just ignored
  * @returns {string} Returns the rendered markdown as string
  * @description
  * Render README markdown
  * @example
- * const result = readmeGenerator.render({
- *   // Your options
- *   // ...
- * })
+ * const result = readmeGenerator.render({ ... })
  */
 const render = exports.render = function (config) {
   // First, parse custom config
@@ -199,29 +193,42 @@ const render = exports.render = function (config) {
 
 /**
  * @alias module:readme-generator.processConfig
- * @param {Configuration} config - The config object to process
+ * @param {Configuration|string} config - The config object to process. Can be path to config file as string.
  * @returns {Configuration} Returns the processed configuration
  * @description
  * Takes a custom config as unique parameter and merges it with the default configuration object.
  * @example
- * const processedConfig = readmeGenerator.processConfig({
- *   // Your config
- *   // ...
- * })
- * // => returns the processed config object
+ * readmeGenerator.processConfig({ ... }) // pass object
+ * readmeGenerator.processConfig('./.docs/readme/config.js') // pass path as string
  */
 const processConfig = exports.processConfig = function (config) {
+  let customConfig
+  // Check if config is string
+  if (typeof config === 'string') {
+    // path is passed
+    const configPath = path.isAbsolute(config)
+      ? config
+      : path.resolve(process.cwd(), config)
+    // Require it
+    customConfig = require(configPath)
+  } else if (typeof config !== 'object') {
+    // Not object => throw type error
+    throw new TypeError('config parameter must be object or string. Received ' + typeof config)
+  } else {
+    // Object
+    customConfig = config
+  }
   const result = {}
-  result.fileName = config.fileName || defaultConfig.fileName
-  result.destFolder = config.destFolder || defaultConfig.destFolder
-  result.templatePath = config.templatePath || defaultConfig.templatePath
-  result.ejsDataPath = config.ejsDataPath || defaultConfig.ejsDataPath
+  result.fileName = customConfig.fileName || defaultConfig.fileName
+  result.destFolder = customConfig.destFolder || defaultConfig.destFolder
+  result.templatePath = customConfig.templatePath || defaultConfig.templatePath
+  result.ejsDataPath = customConfig.ejsDataPath || defaultConfig.ejsDataPath
   // If custom ejs options
-  if (config.ejsOptions) {
+  if (customConfig.ejsOptions) {
     result.ejsOptions = {
       root: defaultConfig.ejsOptions.root, // root prop see below (always array)
       views: defaultConfig.ejsOptions.views, // views prop see below (always array)
-      ...config.ejsOptions
+      ...customConfig.ejsOptions
     }
     // Ensure that ejs root option includes templatePath folder
     const rootTemplatePath = path.dirname(result.templatePath)
@@ -240,14 +247,14 @@ const processConfig = exports.processConfig = function (config) {
   } else {
     result.ejsOptions = defaultConfig.ejsOptions
   }
-  result.appendAutoGenMessage = config.appendAutoGenMessage !== undefined
-    ? config.appendAutoGenMessage
+  result.appendAutoGenMessage = customConfig.appendAutoGenMessage !== undefined
+    ? customConfig.appendAutoGenMessage
     : defaultConfig.appendAutoGenMessage
-  result.autoToc = config.autoToc !== undefined
-    ? config.autoToc
+  result.autoToc = customConfig.autoToc !== undefined
+    ? customConfig.autoToc
     : defaultConfig.autoToc
-  result.slugify = config.slugify !== undefined
-    ? config.slugify
+  result.slugify = customConfig.slugify !== undefined
+    ? customConfig.slugify
     : defaultConfig.slugify
   return result
 }

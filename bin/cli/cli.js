@@ -5,12 +5,10 @@
  */
 
 const yargonaut = require('yargonaut') // yargonaut first!
-const path = require('path')
 const chalk = require('chalk')
 const yargs = require('yargs')
 
 const { generate: readmeGenerator, defaultInitTargetRelativePath } = require('../../src')
-const rootDir = process.cwd()
 
 yargonaut.style('yellow')
   .helpStyle('cyan.underline')
@@ -44,12 +42,8 @@ const cli = yargs
       })
     },
     handler: (argv) => {
-      // Get config path
-      const configPath = path.join(rootDir, argv.config)
-      // Get configuration object
-      const config = require(configPath)
       // Call generator with config
-      readmeGenerator(config)
+      readmeGenerator(argv.config)
     }
   })
 
