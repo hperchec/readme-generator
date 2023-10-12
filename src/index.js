@@ -22,7 +22,7 @@
  * @property {string} [fileName] - Output file name: `README.md` by default. Only for **generate** method
  * @property {string} [destFolder] - Output path, default is `process.cwd` (project root). Only for **generate** method
  * @property {string} [templatePath] - Template path: default is `.docs/readme/template.md`
- * @property {string} [ejsDataPath] -  Path to EJS data file: default is `.docs/readme/data.js`
+ * @property {?string} [ejsDataPath] -  Path to EJS data file: default is `.docs/readme/data.js`. If null, no file will be required
  * @property {object} [ejsOptions] - EJS options: see also {@link https://www.npmjs.com/package/ejs#options EJS documentation}.
  * @property {string[]} [ejsOptions.root] - The path of template folder is automatically included.
  * @property {string[]} [ejsOptions.views] - The path of template folder and the path of internal partials are automatically included.
@@ -57,15 +57,17 @@ const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
 /**
  * @alias module:readme-generator.generate
  * @param {Configuration|string} config - The config object to process. Can be path to config file as string.
+ * @param {object} [options] - Options object
+ * @param {object} [options.data] - Additionnal data object to merge with default EJS data
  * @returns {void}
  * @throws Throws error if render or file writing fails
  * @description
  * Writes rendered README markdown to file
  * @example
- * const result = readmeGenerator.generate({ ... })
- * // => output to README.md file
+ * readmeGenerator.generate(config) // => output to README.md file
+ * readmeGenerator.generate(config, { data: { foo: 'bar' } }) // pass options
  */
-const generate = exports.generate = function (config) { // eslint-disable-line no-unused-vars
+const generate = exports.generate = function (config, options = {}) { // eslint-disable-line no-unused-vars
   // First, parse custom config
   const processedConfig = processConfig(config)
   // Target file path
@@ -77,7 +79,7 @@ const generate = exports.generate = function (config) { // eslint-disable-line n
   console.log('- Syntax: ' + 'ejs'.yellow)
 
   // Render markdown
-  const renderResult = render(processedConfig)
+  const renderResult = render(processedConfig, options)
 
   try {
     // Try to write file (synchronous)
@@ -96,24 +98,27 @@ const generate = exports.generate = function (config) { // eslint-disable-line n
 /**
  * @alias module:readme-generator.render
  * @param {Configuration|string} config - Same as generate config but `fileName` and `destFolder` option are just ignored
+ * @param {object} [options] - Same as generate
  * @returns {string} Returns the rendered markdown as string
  * @description
  * Render README markdown
  * @example
- * const result = readmeGenerator.render({ ... })
+ * const result = readmeGenerator.render(config)
+ * const result = readmeGenerator.render(config, { data: { foo: 'bar' } })
  */
-const render = exports.render = function (config) {
+const render = exports.render = function (config, options = {}) {
   // First, parse custom config
   const processedConfig = processConfig(config)
 
   // Data
-  const data = require(processedConfig.ejsDataPath)
+  const data = processedConfig.ejsDataPath ? require(processedConfig.ejsDataPath) : {}
+  options.data = options.data || {}
   // Use ejs to template README file
   // Merge with user data
-  const ejsData = merge({
+  const ejsData = merge(merge({
     ...defaultEjsData,
     $config: processedConfig
-  }, data)
+  }, data), options.data)
 
   // Read file
   let input = fs.readFileSync(processedConfig.templatePath, { encoding: 'utf8' })
@@ -222,7 +227,7 @@ const processConfig = exports.processConfig = function (config) {
   result.fileName = customConfig.fileName || defaultConfig.fileName
   result.destFolder = customConfig.destFolder || defaultConfig.destFolder
   result.templatePath = customConfig.templatePath || defaultConfig.templatePath
-  result.ejsDataPath = customConfig.ejsDataPath || defaultConfig.ejsDataPath
+  result.ejsDataPath = customConfig.ejsDataPath === null ? null : defaultConfig.ejsDataPath
   // If custom ejs options
   if (customConfig.ejsOptions) {
     result.ejsOptions = {

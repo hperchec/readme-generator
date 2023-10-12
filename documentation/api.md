@@ -32,14 +32,16 @@ Writes rendered README markdown to file
 - Throws error if render or file writing fails
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| config | <code>Configuration</code> \| <code>string</code> | The config object to process. Can be path to config file as string. |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Configuration</code> \| <code>string</code> |  | The config object to process. Can be path to config file as string. |
+| [options] | <code>object</code> | <code>{}</code> | Options object |
+| [options.data] | <code>object</code> |  | Additionnal data object to merge with default EJS data |
 
 **Example**  
 ```js
-const result = readmeGenerator.generate({ ... })
-// => output to README.md file
+readmeGenerator.generate(config) // => output to README.md file
+readmeGenerator.generate(config, { data: { foo: 'bar' } }) // pass options
 ```
 <a name="module_readme-generator.render"></a>
 
@@ -48,13 +50,15 @@ Render README markdown
 
 **Returns**: <code>string</code> - Returns the rendered markdown as string  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| config | <code>Configuration</code> \| <code>string</code> | Same as generate config but `fileName` and `destFolder` option are just ignored |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| config | <code>Configuration</code> \| <code>string</code> |  | Same as generate config but `fileName` and `destFolder` option are just ignored |
+| [options] | <code>object</code> | <code>{}</code> | Same as generate |
 
 **Example**  
 ```js
-const result = readmeGenerator.render({ ... })
+const result = readmeGenerator.render(config)
+const result = readmeGenerator.render(config, { data: { foo: 'bar' } })
 ```
 <a name="module_readme-generator.processConfig"></a>
 
@@ -139,7 +143,7 @@ Configuration object definition
 | [fileName] | <code>string</code> | Output file name: `README.md` by default. Only for **generate** method |
 | [destFolder] | <code>string</code> | Output path, default is `process.cwd` (project root). Only for **generate** method |
 | [templatePath] | <code>string</code> | Template path: default is `.docs/readme/template.md` |
-| [ejsDataPath] | <code>string</code> | Path to EJS data file: default is `.docs/readme/data.js` |
+| [ejsDataPath] | <code>string</code> | Path to EJS data file: default is `.docs/readme/data.js`. If null, no file will be required |
 | [ejsOptions] | <code>object</code> | EJS options: see also [EJS documentation](https://www.npmjs.com/package/ejs#options). |
 | [ejsOptions.root] | <code>Array.&lt;string&gt;</code> | The path of template folder is automatically included. |
 | [ejsOptions.views] | <code>Array.&lt;string&gt;</code> | The path of template folder and the path of internal partials are automatically included. |
