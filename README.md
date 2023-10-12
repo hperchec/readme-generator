@@ -208,6 +208,7 @@ The following have been renamed:
 
 | name           | version |
 | -------------- | ------- |
+| ascii-tree     | ^0.3.0  |
 | colors         | ^1.4.0  |
 | ejs            | ^3.1.9  |
 | execa          | ^5.1.1  |
@@ -232,7 +233,6 @@ The following have been renamed:
 | @commitlint/cli                 | ^17.7.2  |
 | @commitlint/config-conventional | ^17.7.0  |
 | @hperchec/jsdoc-plugin-define   | ^1.0.1   |
-| ascii-tree                      | ^0.3.0   |
 | conventional-changelog-cli      | ^4.1.0   |
 | cross-env                       | ^7.0.3   |
 | eslint                          | ^8.51.0  |
