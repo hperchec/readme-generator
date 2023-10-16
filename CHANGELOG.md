@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/herveperchec/readme-generator/compare/v2.2.0...v2.3.0) (2023-10-16)
+
+
+### Features
+
+* support async module for config and ejsDataPath file ([24e1666](https://github.com/herveperchec/readme-generator/commit/24e16667deea942bb35e4c2ec3a739ce053e5689))
+
+
+
 # [2.2.0](https://github.com/herveperchec/readme-generator/compare/v2.1.0...v2.2.0) (2023-10-12)
 
 
