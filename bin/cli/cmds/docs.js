@@ -1,3 +1,5 @@
+const chalk = require('chalk')
+
 // Exports command object
 const command = {
   /**
@@ -19,7 +21,7 @@ const command = {
    */
   builder: function (yargs) {
     return yargs.commandDir('docs_cmds')
-      .demandCommand(1, ('Command is missing. See help to learn more.').red)
+      .demandCommand(1, chalk.red('Command is missing. See help to learn more.'))
   },
   /**
    * Handler

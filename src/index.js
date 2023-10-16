@@ -36,7 +36,7 @@
 // Dependencies
 const path = require('path')
 const fs = require('fs')
-const colors = require('colors') // eslint-disable-line no-unused-vars
+const chalk = require('chalk')
 const merge = require('lodash.merge')
 const ejs = require('ejs')
 const mdu = require('markdown-utils')
@@ -82,7 +82,7 @@ const generate = exports.generate = async function (config, options = {}) { // e
   // Some console outputs
   console.log(`Auto-generating "${processedConfig.fileName}" file`)
   console.log()
-  console.log('- Syntax: ' + 'ejs'.yellow)
+  console.log('- Syntax: ' + chalk.yellow('ejs'))
 
   // Render markdown
   const renderResult = await render(processedConfig, options)
@@ -92,12 +92,12 @@ const generate = exports.generate = async function (config, options = {}) { // e
     fs.writeFileSync(targetFilePath, renderResult)
   } catch (error) {
     // Log fail and throw error
-    console.log('- Status:', '✘ FAILED'.red)
+    console.log('- Status:', chalk.red('✘ FAILED'))
     throw error
   }
   // Log success
-  console.log('- Status:', '✔ OK'.green)
-  console.log('- Written to: "' + (targetFilePath).cyan + '"')
+  console.log('- Status:', chalk.green('✔ OK'))
+  console.log('- Written to: "' + chalk.cyan(targetFilePath) + '"')
   console.log()
 }
 
