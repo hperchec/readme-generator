@@ -12,9 +12,9 @@ const readmeGenerator = require('@hperchec/readme-generator')
 
 * [readme-generator](#module_readme-generator) : <code>object</code>
     * _static_
-        * [.generate](#module_readme-generator.generate) ⇒ <code>void</code>
-        * [.render](#module_readme-generator.render) ⇒ <code>string</code>
-        * [.processConfig](#module_readme-generator.processConfig) ⇒ <code>Configuration</code>
+        * [.generate](#module_readme-generator.generate) ⇒ <code>void</code> \| <code>Promise.&lt;void&gt;</code>
+        * [.render](#module_readme-generator.render) ⇒ <code>string</code> \| <code>Promise.&lt;string&gt;</code>
+        * [.processConfig](#module_readme-generator.processConfig) ⇒ <code>Configuration</code> \| <code>Promise.&lt;Configuration&gt;</code>
         * [.defaultConfig](#module_readme-generator.defaultConfig) : <code>Configuration</code>
         * [.defaultEjsData](#module_readme-generator.defaultEjsData) : <code>object</code>
             * [.$config](#module_readme-generator.defaultEjsData.$config) : <code>Configuration</code>
@@ -24,9 +24,10 @@ const readmeGenerator = require('@hperchec/readme-generator')
 
 <a name="module_readme-generator.generate"></a>
 
-### readmeGenerator.generate ⇒ <code>void</code>
+### readmeGenerator.generate ⇒ <code>void</code> \| <code>Promise.&lt;void&gt;</code>
 Writes rendered README markdown to file
 
+**Returns**: <code>void</code> \| <code>Promise.&lt;void&gt;</code> - Promise is immediately resolved except if a module is async.  
 **Throws**:
 
 - Throws error if render or file writing fails
@@ -41,14 +42,20 @@ Writes rendered README markdown to file
 **Example**  
 ```js
 readmeGenerator.generate(config) // => output to README.md file
+readmeGenerator.generate('./.docs/readme/config.js') // pass config path
 readmeGenerator.generate(config, { data: { foo: 'bar' } }) // pass options
+// Async
+await readmeGenerator.generate('./.docs/readme/config.js') // async module
+await readmeGenerator.generate({
+  ejsDataPath: '/path/to/ejs/data.js' // async module
+})
 ```
 <a name="module_readme-generator.render"></a>
 
-### readmeGenerator.render ⇒ <code>string</code>
+### readmeGenerator.render ⇒ <code>string</code> \| <code>Promise.&lt;string&gt;</code>
 Render README markdown
 
-**Returns**: <code>string</code> - Returns the rendered markdown as string  
+**Returns**: <code>string</code> \| <code>Promise.&lt;string&gt;</code> - Returns the rendered markdown as string. Promise is immediately resolved except if a module is async.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -58,14 +65,20 @@ Render README markdown
 **Example**  
 ```js
 const result = readmeGenerator.render(config)
+const result = readmeGenerator.render('./.docs/readme/config.js')
 const result = readmeGenerator.render(config, { data: { foo: 'bar' } })
+// Async
+const result = await readmeGenerator.render('./.docs/readme/config.js') // async module
+const result = await readmeGenerator.render({
+  ejsDataPath: '/path/to/ejs/data.js' // async module
+})
 ```
 <a name="module_readme-generator.processConfig"></a>
 
-### readmeGenerator.processConfig ⇒ <code>Configuration</code>
+### readmeGenerator.processConfig ⇒ <code>Configuration</code> \| <code>Promise.&lt;Configuration&gt;</code>
 Takes a custom config as unique parameter and merges it with the default configuration object.
 
-**Returns**: <code>Configuration</code> - Returns the processed configuration  
+**Returns**: <code>Configuration</code> \| <code>Promise.&lt;Configuration&gt;</code> - Returns the processed configuration. Promise is immediately resolved except if module is async.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -75,6 +88,8 @@ Takes a custom config as unique parameter and merges it with the default configu
 ```js
 readmeGenerator.processConfig({ ... }) // pass object
 readmeGenerator.processConfig('./.docs/readme/config.js') // pass path as string
+// If module.exports is a promise
+await readmeGenerator.processConfig('./.docs/readme/config.js') // async module
 ```
 <a name="module_readme-generator.defaultConfig"></a>
 

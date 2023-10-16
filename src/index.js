@@ -59,17 +59,23 @@ const { DEFAULT_INIT_TARGET_RELATIVE_PATH } = require('./constants')
  * @param {Configuration|string} config - The config object to process. Can be path to config file as string.
  * @param {object} [options] - Options object
  * @param {object} [options.data] - Additionnal data object to merge with default EJS data
- * @returns {void}
+ * @returns {void|Promise<void>} Promise is immediately resolved except if a module is async.
  * @throws Throws error if render or file writing fails
  * @description
  * Writes rendered README markdown to file
  * @example
  * readmeGenerator.generate(config) // => output to README.md file
+ * readmeGenerator.generate('./.docs/readme/config.js') // pass config path
  * readmeGenerator.generate(config, { data: { foo: 'bar' } }) // pass options
+ * // Async
+ * await readmeGenerator.generate('./.docs/readme/config.js') // async module
+ * await readmeGenerator.generate({
+ *   ejsDataPath: '/path/to/ejs/data.js' // async module
+ * })
  */
-const generate = exports.generate = function (config, options = {}) { // eslint-disable-line no-unused-vars
+const generate = exports.generate = async function (config, options = {}) { // eslint-disable-line no-unused-vars
   // First, parse custom config
-  const processedConfig = processConfig(config)
+  const processedConfig = await processConfig(config)
   // Target file path
   const targetFilePath = path.join(processedConfig.destFolder, processedConfig.fileName)
 
@@ -79,7 +85,7 @@ const generate = exports.generate = function (config, options = {}) { // eslint-
   console.log('- Syntax: ' + 'ejs'.yellow)
 
   // Render markdown
-  const renderResult = render(processedConfig, options)
+  const renderResult = await render(processedConfig, options)
 
   try {
     // Try to write file (synchronous)
@@ -99,19 +105,25 @@ const generate = exports.generate = function (config, options = {}) { // eslint-
  * @alias module:readme-generator.render
  * @param {Configuration|string} config - Same as generate config but `fileName` and `destFolder` option are just ignored
  * @param {object} [options] - Same as generate
- * @returns {string} Returns the rendered markdown as string
+ * @returns {string|Promise<string>} Returns the rendered markdown as string. Promise is immediately resolved except if a module is async.
  * @description
  * Render README markdown
  * @example
  * const result = readmeGenerator.render(config)
+ * const result = readmeGenerator.render('./.docs/readme/config.js')
  * const result = readmeGenerator.render(config, { data: { foo: 'bar' } })
+ * // Async
+ * const result = await readmeGenerator.render('./.docs/readme/config.js') // async module
+ * const result = await readmeGenerator.render({
+ *   ejsDataPath: '/path/to/ejs/data.js' // async module
+ * })
  */
-const render = exports.render = function (config, options = {}) {
+const render = exports.render = async function (config, options = {}) {
   // First, parse custom config
-  const processedConfig = processConfig(config)
+  const processedConfig = await processConfig(config)
 
   // Data
-  const data = processedConfig.ejsDataPath ? require(processedConfig.ejsDataPath) : {}
+  const data = processedConfig.ejsDataPath ? await require(processedConfig.ejsDataPath) : {}
   options.data = options.data || {}
   // Use ejs to template README file
   // Merge with user data
@@ -199,14 +211,16 @@ const render = exports.render = function (config, options = {}) {
 /**
  * @alias module:readme-generator.processConfig
  * @param {Configuration|string} config - The config object to process. Can be path to config file as string.
- * @returns {Configuration} Returns the processed configuration
+ * @returns {Configuration|Promise<Configuration>} Returns the processed configuration. Promise is immediately resolved except if module is async.
  * @description
  * Takes a custom config as unique parameter and merges it with the default configuration object.
  * @example
  * readmeGenerator.processConfig({ ... }) // pass object
  * readmeGenerator.processConfig('./.docs/readme/config.js') // pass path as string
+ * // If module.exports is a promise
+ * await readmeGenerator.processConfig('./.docs/readme/config.js') // async module
  */
-const processConfig = exports.processConfig = function (config) {
+const processConfig = exports.processConfig = async function (config) {
   let customConfig
   // Check if config is string
   if (typeof config === 'string') {
@@ -215,7 +229,7 @@ const processConfig = exports.processConfig = function (config) {
       ? config
       : path.resolve(process.cwd(), config)
     // Require it
-    customConfig = require(configPath)
+    customConfig = await require(configPath)
   } else if (typeof config !== 'object') {
     // Not object => throw type error
     throw new TypeError('config parameter must be object or string. Received ' + typeof config)
@@ -227,7 +241,9 @@ const processConfig = exports.processConfig = function (config) {
   result.fileName = customConfig.fileName || defaultConfig.fileName
   result.destFolder = customConfig.destFolder || defaultConfig.destFolder
   result.templatePath = customConfig.templatePath || defaultConfig.templatePath
-  result.ejsDataPath = customConfig.ejsDataPath === null ? null : defaultConfig.ejsDataPath
+  result.ejsDataPath = customConfig.ejsDataPath || customConfig.ejsDataPath === null // can be null
+    ? customConfig.ejsDataPath
+    : defaultConfig.ejsDataPath
   // If custom ejs options
   if (customConfig.ejsOptions) {
     result.ejsOptions = {
