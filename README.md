@@ -209,7 +209,6 @@ The following have been renamed:
 | name           | version |
 | -------------- | ------- |
 | ascii-tree     | ^0.3.0  |
-| colors         | ^1.4.0  |
 | ejs            | ^3.1.9  |
 | execa          | ^5.1.1  |
 | fs-extra       | ^11.1.1 |

@@ -3,7 +3,7 @@
 <a name="module_readme-generator"></a>
 
 ## readme-generator : <code>object</code>
-From: `@hperchec/readme-generator@2.3.0`
+From: `@hperchec/readme-generator@2.3.1`
 
 **Example**  
 ```js
