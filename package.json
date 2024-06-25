@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/herveperchec/readme-generator.git"
+    "url": "https://github.com/hperchec/readme-generator.git"
   },
   "keywords": [
     "readme",
@@ -51,9 +51,9 @@
   "contributors": [],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/herveperchec/readme-generator/issues"
+    "url": "https://github.com/hperchec/readme-generator/issues"
   },
-  "homepage": "https://github.com/herveperchec/readme-generator#readme",
+  "homepage": "https://github.com/hperchec/readme-generator#readme",
   "bin": {
     "readme-generator": "./bin/cli/index.js"
   },
