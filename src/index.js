@@ -136,10 +136,10 @@ const render = exports.render = async function (config, options = {}) {
   let input = fs.readFileSync(processedConfig.templatePath, { encoding: 'utf8' })
   // Append auto generated message to input
   if (processedConfig.appendAutoGenMessage) {
-    input += '\n<%- include(\'common/auto-generated-message.md\') %>'
+    input += '\n<%- await include(\'common/auto-generated-message.md\') %>'
   }
   // Render
-  let content = ejs.render(input, ejsData, processedConfig.ejsOptions)
+  let content = await ejs.render(input, ejsData, processedConfig.ejsOptions)
 
   // Then, parse for auto toc
   if (processedConfig.autoToc) {
@@ -300,6 +300,11 @@ const defaultConfig = exports.defaultConfig = {
   templatePath: path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH, 'template.md'),
   ejsDataPath: path.resolve(process.cwd(), DEFAULT_INIT_TARGET_RELATIVE_PATH, 'data.js'),
   ejsOptions: {
+    /**
+     * Always render in async mode
+     * @since v3.0.0
+     */
+    async: true,
     /**
      * Set project root for includes with an absolute path (e.g, /file.ejs).
      * Can be array to try to resolve include from multiple directories.

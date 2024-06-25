@@ -33,6 +33,12 @@ It is partially inspired from and sounds like a "lightweight" version specially 
 
 ## 🚀 Get started
 
+> Engine compatibility
+>
+> - node 18.19.0
+>
+> See also [browserslist documentation](https://browsersl.ist/)
+
 Install package via npm
 
 ``` bash
@@ -154,7 +160,7 @@ Clone this [repository](<%= repositoryUrl %>) and install via `npm install`
 <summary>Global</summary>
 
 <%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(dependencies))

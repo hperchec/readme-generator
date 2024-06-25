@@ -28,6 +28,15 @@ It is partially inspired from and sounds like a "lightweight" version specially 
 
 ## 🚀 Get started
 
+> Engine compatibility
+>
+<%
+for (let browser of (await supportedBrowsers)) { -%>
+> - <%= browser %>
+<% } -%>
+>
+> See also [browserslist documentation](https://browsersl.ist/)
+
 Install package via npm
 
 ``` bash
@@ -152,7 +161,7 @@ Clone this [repository](<%%= repositoryUrl %>) and install via `npm install`
 <summary>Global</summary>
 
 <%%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(dependencies))
@@ -205,7 +214,7 @@ The following have been renamed:
 <summary>Global</summary>
 
 <%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(dependencies))
@@ -220,7 +229,7 @@ The following have been renamed:
 <summary>Dev</summary>
 
 <%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(devDependencies))
@@ -235,7 +244,7 @@ The following have been renamed:
 <summary>Peer</summary>
 
 <%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(peerDependencies))

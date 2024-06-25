@@ -23,7 +23,7 @@ Clone this [repository](<%= repositoryUrl %>) and install via `npm install`
 <summary>Global</summary>
 
 <%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(dependencies))
@@ -38,7 +38,7 @@ Clone this [repository](<%= repositoryUrl %>) and install via `npm install`
 <summary>Dev</summary>
 
 <%-
-  include('common/table.md', {
+  await include('common/table.md', {
     options: [
       ['name', 'version'],
       ...(Object.entries(devDependencies))

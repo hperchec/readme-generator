@@ -7,6 +7,8 @@
 
 'use strict'
 
+const execa = require('execa')
+
 // Constants
 const { defaultInitTargetRelativePath } = require('../../src')
 
@@ -27,6 +29,25 @@ const projectPath = projectUrl.replace('https://gitlab.com/', '') // remove doma
 const issuesUrl = pkg.bugs.url
 
 /**
+ * Get the complete list of supported browsers
+ * @returns {Promise<string[]>} - The list of supported browsers
+ */
+async function getSupportedBrowsers () {
+  try {
+    const { stdout } = await execa(
+      'npx',
+      [
+        'browserslist'
+      ],
+      { stdio: 'pipe' }
+    )
+    return stdout.split('\n')
+  } catch (e) {
+    error('Unable to get supported browsers list', e)
+  }
+}
+
+/**
  * Export data for readme file templating
  */
 module.exports = {
@@ -44,5 +65,6 @@ module.exports = {
   projectPath,
   issuesUrl,
   // Custom data
-  defaultInitTargetRelativePath: defaultInitTargetRelativePath
+  defaultInitTargetRelativePath: defaultInitTargetRelativePath,
+  supportedBrowsers: getSupportedBrowsers()
 }
