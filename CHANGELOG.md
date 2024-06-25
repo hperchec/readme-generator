@@ -1,3 +1,17 @@
+# [3.0.0](https://github.com/herveperchec/readme-generator/compare/v2.3.1...v3.0.0) (2024-06-25)
+
+
+### Features
+
+* support for async rendering ([979f907](https://github.com/herveperchec/readme-generator/commit/979f90799cb75c3f37f58e280a66b9a8feb3d557))
+
+
+### BREAKING CHANGES
+
+* rendering is now fully async
+
+
+
 ## [2.3.1](https://github.com/herveperchec/readme-generator/compare/v2.3.0...v2.3.1) (2023-10-16)
 
 
