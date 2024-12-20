@@ -5,8 +5,8 @@
 
 [![package](https://img.shields.io/npm/v/@hperchec/readme-generator?logo=npm)](https://www.npmjs.com/package/@hperchec/readme-generator)
 [![downloads](https://img.shields.io/npm/dw/@hperchec/readme-generator?logo=npm)](https://www.npmjs.com/package/@hperchec/readme-generator)
-[![issues](https://img.shields.io/github/issues/open/https://github.com/herveperchec/readme-generator?gitlab_url=https%3A%2F%2Fgitlab.com)](https://github.com/herveperchec/readme-generator/issues)
-![license](https://img.shields.io/github/license/https://github.com/herveperchec/readme-generator?gitlab_url=https%3A%2F%2Fgitlab.com)
+[![issues](https://img.shields.io/github/issues/open/https://github.com/hperchec/readme-generator?gitlab_url=https%3A%2F%2Fgitlab.com)](https://github.com/hperchec/readme-generator/issues)
+![license](https://img.shields.io/github/license/https://github.com/hperchec/readme-generator?gitlab_url=https%3A%2F%2Fgitlab.com)
 
 > Please consider following this project's author, [Hervé Perchec](https://github.com/hperchec), and consider starring the project to show your ❤ and support.
 
@@ -35,7 +35,7 @@ It is partially inspired from and sounds like a "lightweight" version specially 
 
 > Engine compatibility
 >
-> - node 18.19.0
+> - node 18.20.0
 >
 > See also [browserslist documentation](https://browsersl.ist/)
 

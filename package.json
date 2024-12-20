@@ -1,6 +1,6 @@
 {
   "name": "@hperchec/readme-generator",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A useful README file generator using .ejs template",
   "main": "src/index.js",
   "publishConfig": {
@@ -39,9 +39,12 @@
   },
   "keywords": [
     "readme",
+    "generator",
+    "documentation",
+    "markdown",
+    "md",
     "ejs",
-    "templater",
-    "generator"
+    "templater"
   ],
   "author": {
     "name": "Hervé Perchec",

@@ -1,3 +1,7 @@
+# [3.1.0](https://github.com/hperchec/readme-generator/compare/v3.0.0...v3.1.0) (2024-12-20)
+
+
+
 # [3.0.0](https://github.com/herveperchec/readme-generator/compare/v2.3.1...v3.0.0) (2024-06-25)
 
 
