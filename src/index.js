@@ -35,6 +35,7 @@
 
 // Dependencies
 const path = require('path')
+const { pathToFileURL } = require('url')
 const fs = require('fs')
 const chalk = require('chalk')
 const merge = require('lodash.merge')
@@ -123,7 +124,9 @@ const render = exports.render = async function (config, options = {}) {
   const processedConfig = await processConfig(config)
 
   // Data
-  const data = processedConfig.ejsDataPath ? await require(processedConfig.ejsDataPath) : {}
+  const data = processedConfig.ejsDataPath
+    ? await import(pathToFileURL(processedConfig.ejsDataPath)).then((mod) => mod.default || mod)
+    : {}
   options.data = options.data || {}
   // Use ejs to template README file
   // Merge with user data
@@ -225,11 +228,11 @@ const processConfig = exports.processConfig = async function (config) {
   // Check if config is string
   if (typeof config === 'string') {
     // path is passed
-    const configPath = path.isAbsolute(config)
+    const configPath = pathToFileURL(path.isAbsolute(config)
       ? config
-      : path.resolve(process.cwd(), config)
+      : path.resolve(process.cwd(), config))
     // Require it
-    customConfig = await require(configPath)
+    customConfig = (await import(configPath.toString())).default
   } else if (typeof config !== 'object') {
     // Not object => throw type error
     throw new TypeError('config parameter must be object or string. Received ' + typeof config)
